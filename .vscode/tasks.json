@@ -1,0 +1,23 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build WASM",
+            "type": "shell",
+            "command": "emcc",
+            "args": [
+                "main.cpp",
+                "-o",
+                "main.js",
+                "-s", "EXPORTED_RUNTIME_METHODS=['cwrap']",
+                "-s", "EXPORTED_FUNCTIONS=['_addNumbers', '_main']",
+                "-s", "WASM=1"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": "$gcc"
+        }
+    ]
+}
