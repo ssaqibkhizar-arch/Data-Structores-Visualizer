@@ -4,14 +4,16 @@
         {
             "label": "Build WASM",
             "type": "shell",
-            "command": "emcc",
+            "command": "C:/Users/ssaqi/emsdk/upstream/emscripten/emcc.bat",
             "args": [
                 "main.cpp",
                 "-o",
                 "main.js",
-                "-s", "EXPORTED_RUNTIME_METHODS=['cwrap']",
-                "-s", "EXPORTED_FUNCTIONS=['_addNumbers', '_main']",
-                "-s", "WASM=1"
+                "-s", "EXPORTED_RUNTIME_METHODS=[\"ccall\",\"cwrap\",\"getValue\",\"setValue\",\"HEAP32\"]",
+                "-s", "EXPORTED_FUNCTIONS=[\"_initGraph\",\"_addEdge\",\"_getResultBuffer\",\"_runBFS\",\"_runDFS\",\"_runPrims\",\"_runDijkstra\",\"_main\"]",
+                "-s", "WASM=1",
+                "-s", "ALLOW_MEMORY_GROWTH=1",
+                "-s", "NO_EXIT_RUNTIME=1"
             ],
             "group": {
                 "kind": "build",
