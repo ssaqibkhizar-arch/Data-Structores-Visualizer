@@ -1,21 +1,32 @@
 /* --- 1. Variables & Reset --- */
 :root {
     /* Color Palette */
-    --primary-color: #2563eb;       /* Royal Blue */
+    --primary-color: #2563eb;
+    /* Royal Blue */
     --primary-hover: #1d4ed8;
-    --secondary-color: #4b5563;     /* Cool Gray */
+    --secondary-color: #4b5563;
+    /* Cool Gray */
     --secondary-hover: #374151;
-    --accent-color: #10b981;        /* Emerald Green */
-    --danger-color: #ef4444;        /* Red */
-    
-    --bg-body: #f3f4f6;             /* Light Gray Background */
-    --bg-panel: #ffffff;            /* White Panels */
-    --border-color: #e5e7eb;        /* Light Border */
-    --text-main: #111827;           /* Almost Black */
-    --text-muted: #6b7280;          /* Gray Text */
-    
-    --console-bg: #1f2937;          /* Dark Gray Console */
-    --console-text: #10b981;        /* Matrix Green */
+    --accent-color: #10b981;
+    /* Emerald Green */
+    --danger-color: #ef4444;
+    /* Red */
+
+    --bg-body: #f3f4f6;
+    /* Light Gray Background */
+    --bg-panel: #ffffff;
+    /* White Panels */
+    --border-color: #e5e7eb;
+    /* Light Border */
+    --text-main: #111827;
+    /* Almost Black */
+    --text-muted: #6b7280;
+    /* Gray Text */
+
+    --console-bg: #1f2937;
+    /* Dark Gray Console */
+    --console-text: #10b981;
+    /* Matrix Green */
 
     --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
@@ -35,7 +46,8 @@ body {
     height: 100vh;
     display: flex;
     flex-direction: column;
-    overflow: hidden; /* Prevent full page scroll */
+    overflow: hidden;
+    /* Prevent full page scroll */
 }
 
 /* --- 2. Header --- */
@@ -97,12 +109,14 @@ body {
 .status-dot {
     width: 8px;
     height: 8px;
-    background-color: #fbbf24; /* Amber loading */
+    background-color: #fbbf24;
+    /* Amber loading */
     border-radius: 50%;
 }
 
 .status-dot.ready {
-    background-color: var(--accent-color); /* Green ready */
+    background-color: var(--accent-color);
+    /* Green ready */
     box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
 }
 
@@ -159,7 +173,8 @@ body {
 }
 
 /* Inputs & Buttons */
-.input-group label, .small-input label {
+.input-group label,
+.small-input label {
     display: block;
     font-size: 0.8rem;
     font-weight: 500;
@@ -204,7 +219,9 @@ input[type="number"]:focus {
     flex-grow: 1;
 }
 
-.primary-btn:hover { background-color: var(--primary-hover); }
+.primary-btn:hover {
+    background-color: var(--primary-hover);
+}
 
 .secondary-btn {
     background-color: var(--secondary-color);
@@ -212,7 +229,9 @@ input[type="number"]:focus {
     width: 100%;
 }
 
-.secondary-btn:hover { background-color: var(--secondary-hover); }
+.secondary-btn:hover {
+    background-color: var(--secondary-hover);
+}
 
 /* Weighted Toggle Switch */
 .toggle-switch {
@@ -246,14 +265,14 @@ input[type="number"]:focus {
     top: 2px;
     left: 2px;
     transition: transform 0.2s;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
-.toggle-switch input:checked + .slider {
+.toggle-switch input:checked+.slider {
     background-color: var(--primary-color);
 }
 
-.toggle-switch input:checked + .slider::before {
+.toggle-switch input:checked+.slider::before {
     transform: translateX(16px);
 }
 
@@ -303,7 +322,8 @@ input[type="number"]:focus {
     border: 1px solid var(--border-color);
     padding: 1rem;
     text-align: center;
-    border-bottom: 1px solid var(--border-color) !important; /* Override section style */
+    border-bottom: 1px solid var(--border-color) !important;
+    /* Override section style */
 }
 
 .complexity-box h3 {
@@ -334,7 +354,8 @@ input[type="number"]:focus {
 /* --- Main Display Area --- */
 .main-display {
     flex: 1;
-    position: relative; /* Essential for floating elements inside */
+    position: relative;
+    /* Essential for floating elements inside */
     background-color: #f3f4f6;
     background-image: radial-gradient(#d1d5db 1px, transparent 1px);
     background-size: 20px 20px;
@@ -342,8 +363,10 @@ input[type="number"]:focus {
 }
 
 .canvas-container {
-    width: 100%;  /* Takes full width */
-    height: 100%; /* Takes full height */
+    width: 100%;
+    /* Takes full width */
+    height: 100%;
+    /* Takes full height */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -356,7 +379,7 @@ input[type="number"]:focus {
     right: 15px;
     font-size: 0.75rem;
     color: var(--text-muted);
-    background: rgba(255,255,255,0.8);
+    background: rgba(255, 255, 255, 0.8);
     padding: 2px 6px;
     border-radius: 4px;
     pointer-events: none;
@@ -368,23 +391,27 @@ input[type="number"]:focus {
     position: absolute;
     bottom: 20px;
     right: 20px;
-    width: 360px; /* Slightly wider for readability */
+    width: 360px;
+    /* Slightly wider for readability */
     height: 280px;
-    
+
     /* Professional Dark Glass */
-    background: rgba(15, 23, 42, 0.85); /* Darker Slate */
+    background: rgba(15, 23, 42, 0.85);
+    /* Darker Slate */
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    
+
     /* Subtle Border Gradient */
     border: 1px solid rgba(255, 255, 255, 0.1);
-    border-top: 1px solid rgba(255, 255, 255, 0.15); /* Light top border for depth */
-    
-    box-shadow: 
-        0 4px 6px -1px rgba(0, 0, 0, 0.1), 
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    /* Light top border for depth */
+
+    box-shadow:
+        0 4px 6px -1px rgba(0, 0, 0, 0.1),
         0 2px 4px -1px rgba(0, 0, 0, 0.06),
-        0 20px 25px -5px rgba(0, 0, 0, 0.5); /* Deep shadow */
-    
+        0 20px 25px -5px rgba(0, 0, 0, 0.5);
+    /* Deep shadow */
+
     border-radius: 12px;
     display: flex;
     flex-direction: column;
@@ -396,7 +423,8 @@ input[type="number"]:focus {
 /* Glow effect when active */
 .console-container.dragging {
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
-    transform: scale(1.02); /* Subtle pop */
+    transform: scale(1.02);
+    /* Subtle pop */
     border-color: rgba(255, 255, 255, 0.2);
     cursor: grabbing;
 }
@@ -409,7 +437,8 @@ input[type="number"]:focus {
     align-items: center;
     cursor: grab;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    user-select: none; /* Prevent text selection while dragging */
+    user-select: none;
+    /* Prevent text selection while dragging */
 }
 
 .console-header:active {
@@ -418,7 +447,8 @@ input[type="number"]:focus {
 }
 
 .console-header span {
-    color: #e2e8f0; /* Light gray text */
+    color: #e2e8f0;
+    /* Light gray text */
     font-size: 0.75rem;
     font-weight: 700;
     text-transform: uppercase;
@@ -436,8 +466,8 @@ input[type="number"]:focus {
     filter: grayscale(1);
 }
 
-.btn-icon:hover { 
-    opacity: 1; 
+.btn-icon:hover {
+    opacity: 1;
     filter: grayscale(0);
     transform: scale(1.1);
 }
@@ -451,7 +481,9 @@ input[type="number"]:focus {
     padding: 0;
 }
 
-.btn-text:hover { color: white; }
+.btn-text:hover {
+    color: white;
+}
 
 .console-body {
     padding: 1rem;
@@ -468,8 +500,10 @@ input[type="number"]:focus {
 }
 
 .log-entry.system {
-    color: #60a5fa; /* Blue for system messages */
+    color: #60a5fa;
+    /* Blue for system messages */
 }
+
 /* --- NEW: Output Panel Styling --- */
 
 /* Adjust the existing console to be bottom-right by default */
@@ -486,7 +520,8 @@ input[type="number"]:focus {
     text-align: center;
 }
 
-.matrix-table th, .matrix-table td {
+.matrix-table th,
+.matrix-table td {
     padding: 6px;
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
@@ -498,21 +533,27 @@ input[type="number"]:focus {
 }
 
 .matrix-table td.active-cell {
-    background-color: rgba(16, 185, 129, 0.2); /* Green tint for connections */
+    background-color: rgba(16, 185, 129, 0.2);
+    /* Green tint for connections */
     color: #10b981;
 }
 
 /* List Styling */
 .adj-list-item {
     padding: 4px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
-.adj-arrow { color: var(--primary-color); margin: 0 5px; }
+
+.adj-arrow {
+    color: var(--primary-color);
+    margin: 0 5px;
+}
 
 /* --- NEW: Bottom Data Structure Panel --- */
 .ds-panel {
     position: fixed;
-    bottom: -150px; /* Hidden by default */
+    bottom: -150px;
+    /* Hidden by default */
     left: 50%;
     transform: translateX(-50%);
     width: 600px;
@@ -530,7 +571,8 @@ input[type="number"]:focus {
 }
 
 .ds-panel.active {
-    bottom: 0; /* Slide up */
+    bottom: 0;
+    /* Slide up */
 }
 
 .ds-header {
@@ -574,7 +616,7 @@ input[type="number"]:focus {
     align-items: center;
     font-weight: bold;
     font-family: 'Fira Code', monospace;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     animation: popIn 0.3s ease;
 }
 
@@ -585,15 +627,23 @@ input[type="number"]:focus {
 }
 
 @keyframes popIn {
-    0% { transform: scale(0); opacity: 0; }
-    100% { transform: scale(1); opacity: 1; }
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
 }
 
 /* Scrollbar for the panel */
 .ds-content::-webkit-scrollbar {
     height: 4px;
 }
+
 .ds-content::-webkit-scrollbar-thumb {
-    background: rgba(255,255,255,0.2);
+    background: rgba(255, 255, 255, 0.2);
     border-radius: 2px;
 }
