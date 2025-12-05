@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <string>
 #include <sstream>
+#include<queue>
 
 #ifdef __EMSCRIPTEN__
 #include <emscripten/emscripten.h>
@@ -152,6 +153,19 @@ class AVLTree {
         postOrder(root->right, ss);
         ss << root->key << " ";
     }
+
+    void levelOrder(Node* root, stringstream& ss) {
+        if (!root) return;
+        std::queue<Node*> q;
+        q.push(root);
+        while (!q.empty()) {
+            Node* current = q.front();
+            q.pop();
+            ss << current->key << " ";
+            if (current->left) q.push(current->left);
+            if (current->right) q.push(current->right);
+        }
+    }
     
     void deleteTree(Node* node) {
         if (!node) return;
@@ -177,6 +191,7 @@ public:
         if (type == 0) preOrder(root, ss);
         else if (type == 1) inOrder(root, ss);
         else if (type == 2) postOrder(root, ss);
+        else if (type == 3) levelOrder(root, ss); 
         return ss.str();
     }
 };

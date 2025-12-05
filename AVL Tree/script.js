@@ -94,6 +94,7 @@ function setupEventListeners() {
     document.getElementById('inOrderBtn').onclick = () => handleTraversal(1);
     document.getElementById('preOrderBtn').onclick = () => handleTraversal(0);
     document.getElementById('postOrderBtn').onclick = () => handleTraversal(2);
+    document.getElementById('levelOrderBtn').onclick = () => handleTraversal(3);
     
     document.getElementById('btnClearOutput').onclick = () => {
         document.getElementById('outputBody').innerHTML = '<div class="log-entry system">Cleared.</div>';
@@ -144,7 +145,7 @@ function handleSearch() {
 
 function handleTraversal(type) {
     if (!isWasmReady) return;
-    const types = ["PreOrder", "InOrder", "PostOrder"];
+    const types = ["PreOrder", "InOrder", "PostOrder", "LevelOrder"];
     const name = types[type];
     
     logConsole(`>> Running ${name} Traversal...`);
@@ -206,8 +207,10 @@ function updateD3(treeData) {
     }
 
     // 2. Data Processing
-    // Create the hierarchy from JSON
-    rootHierarchy = d3.hierarchy(treeData);
+    // FIX: We use a custom accessor to filter out the 'null' children sent by C++
+    rootHierarchy = d3.hierarchy(treeData, d => {
+        return d.children ? d.children.filter(c => c !== null) : null;
+    });
     
     // Compute the new X/Y coordinates
     treeLayout(rootHierarchy);
@@ -348,6 +351,7 @@ function resetNodeVisuals() {
 function animateSearchPath(node, targetVal, exists) {
     if (!node) return;
 
+    // 1. Highlight current node
     const domNode = d3.select(`#node-${node.value} circle`);
     
     domNode.transition().duration(300)
@@ -356,21 +360,32 @@ function animateSearchPath(node, targetVal, exists) {
         .style("stroke-width", "4px");
 
     setTimeout(() => {
+        // 2. Check if Found
         if (node.value === targetVal) {
             domNode.transition().duration(300)
                 .style("stroke", CONFIG.colors.found)
                 .style("fill", "#ecfdf5")
                 .style("stroke-width", "5px");
             logConsole(`>> Found ${targetVal}!`);
-        } else if (targetVal < node.value) {
-            if (node.left) {
-                animateSearchPath(node.left, targetVal, exists);
+            return;
+        }
+
+        // 3. Recursive Step using 'children' array
+        // C++ sends [left, right]. We must check if they exist and are not null.
+        const leftChild = (node.children && node.children[0]) ? node.children[0] : null;
+        const rightChild = (node.children && node.children[1]) ? node.children[1] : null;
+
+        if (targetVal < node.value) {
+            // Go Left
+            if (leftChild) {
+                animateSearchPath(leftChild, targetVal, exists);
             } else {
                 if(!exists) logConsole(`>> ${targetVal} not found.`);
             }
         } else {
-            if (node.right) {
-                animateSearchPath(node.right, targetVal, exists);
+            // Go Right
+            if (rightChild) {
+                animateSearchPath(rightChild, targetVal, exists);
             } else {
                 if(!exists) logConsole(`>> ${targetVal} not found.`);
             }
