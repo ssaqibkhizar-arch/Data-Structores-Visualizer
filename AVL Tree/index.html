@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AVL Tree Visualizer | C++ WASM</title>
+    
+    <!-- Link to the shared styling -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Top Navigation / Header -->
+    <header class="app-header">
+        <div class="header-content">
+            <div class="brand">
+                <div class="logo-icon"></div>
+                <h1>AVL Tree Visualizer</h1>
+            </div>
+            <span class="badge">C++ Powered</span>
+        </div>
+        <div class="status-indicator" id="systemStatus">
+            <span class="status-dot"></span> System: Loading...
+        </div>
+    </header>
+
+    <!-- Main Workspace Layout -->
+    <div class="workspace">
+        
+        <!-- LEFT SIDEBAR: Controls & Inputs -->
+        <aside class="sidebar">
+            
+            <!-- Section 1: Tree Operations -->
+            <section class="panel-section">
+                <div class="section-header">
+                    <h2>1. Node Operations</h2>
+                </div>
+                <p class="helper-text">Insert or delete nodes to see auto-balancing.</p>
+                
+                <div class="input-group">
+                    <label>Node Value</label>
+                    <div class="control-row">
+                        <input type="number" id="nodeValue" placeholder="e.g. 42">
+                        <button id="insertBtn" class="btn primary-btn">Insert</button>
+                    </div>
+                </div>
+                <div class="control-row" style="margin-top: 0.5rem;">
+                    <button id="deleteBtn" class="btn danger-btn">Delete</button>
+                    <button id="searchBtn" class="btn info-btn">Search</button>
+                </div>
+                <button id="generateRandomBtn" class="btn secondary-btn" style="width: 100%; margin-top: 0.5rem;">Insert Random</button>
+            </section>
+
+            <!-- Section 2: Traversals -->
+            <section class="panel-section">
+                <div class="section-header">
+                    <h2>2. Traversals</h2>
+                </div>
+                <div class="algo-grid">
+                    <button id="inOrderBtn" class="btn algo-btn">InOrder</button>
+                    <button id="preOrderBtn" class="btn algo-btn">PreOrder</button>
+                    <button id="postOrderBtn" class="btn algo-btn">PostOrder</button>
+                </div>
+            </section>
+
+            <!-- Section 3: Statistics -->
+            <section class="panel-section complexity-box">
+                <h3>Tree Statistics</h3>
+                <div id="complexityDisplay">
+                    <div class="algo-name">Height: <span class="big-o" id="treeHeight">0</span></div>
+                    <div class="algo-name">Nodes: <span class="big-o" id="nodeCount">0</span></div>
+                    <div class="algo-name" style="margin-top:5px; font-size: 0.8em; color:#666;">Status: <span id="balanceStatus">Balanced</span></div>
+                </div>
+            </section>
+
+            <!-- Clear -->
+            <section class="panel-section" style="border:none;">
+                <button id="clearBtn" class="btn secondary-btn" style="background-color: #374151;">Reset Tree</button>
+            </section>
+        </aside>
+
+        <!-- RIGHT AREA: Visualization & Logs -->
+        <main class="main-display" id="visualizerArea">
+            
+            <!-- Canvas Wrapper -->
+            <div class="canvas-container">
+                <!-- We use a div for D3 SVG, or a canvas if preferred. D3 is better for trees. -->
+                <div id="tree-canvas" style="width:100%; height:100%; display:flex; justify-content:center; align-items:flex-start; padding-top:20px;"></div>
+                <div class="canvas-overlay">D3.js Visualization Layer</div>
+            </div>
+
+            <!-- Panel 1: Execution Log (Bottom Right) -->
+            <div class="console-container" id="floatingConsole">
+                <div class="console-header" id="dragHandle">
+                    <span>System Log</span>
+                    <button id="btnClearConsole" class="btn-text" title="Clear Log">Clear</button>
+                </div>
+                <div id="outputConsole" class="console-body">
+                    <div class="log-entry system">> Initializing WebAssembly Environment...</div>
+                </div>
+            </div>
+
+            <!-- Panel 2: Output / Traversals (Top Right) -->
+            <div class="console-container" id="outputPanel" style="top: 20px; right: 20px; bottom: auto; height: 200px;">
+                <div class="console-header" id="outputDragHandle">
+                    <span>Results & Traversals</span>
+                    <button id="btnClearOutput" class="btn-text" title="Clear">Clear</button>
+                </div>
+                <div id="outputBody" class="console-body">
+                    <div class="log-entry system">Waiting for operations...</div>
+                </div>
+            </div>
+            
+        </main>
+    </div>
+
+    <!-- SCRIPTS CONFIGURATION -->
+    <script>
+        var Module = {
+            onRuntimeInitialized: function() {
+                // Call the function in script.js to update the UI
+                if (typeof onReady === 'function') {
+                    onReady();
+                }
+            }
+        };
+    </script>
+    
+    <!-- D3.js for Tree Rendering -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    
+    <!-- WASM Glue Code (Compiled from C++) -->
+    <script src="main.js"></script>
+    
+    <!-- Frontend Logic -->
+    <script src="script.js"></script>
+</body>
+</html>
