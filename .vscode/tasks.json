@@ -2,7 +2,7 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Build AVL Tree",
+            "label": "Build Binary Heap",
             "type": "shell",
             "command": "C:/Users/ssaqi/emsdk/upstream/emscripten/emcc.bat",
             "args": [
@@ -10,13 +10,13 @@
                 "-o",
                 "main.js",
                 "-s", "EXPORTED_RUNTIME_METHODS=[\"ccall\",\"cwrap\"]",
-                "-s", "EXPORTED_FUNCTIONS=[\"_initTree\",\"_insertNode\",\"_deleteNode\",\"_searchNode\",\"_getTreeJSON\",\"_getTraversal\",\"_main\"]",
+                "-s", "EXPORTED_FUNCTIONS=[\"_initHeap\",\"_toggleMode\",\"_insertNode\",\"_deleteNode\",\"_getHeapJSON\",\"_getArrayData\",\"_main\"]",
                 "-s", "WASM=1",
                 "-s", "ALLOW_MEMORY_GROWTH=1",
                 "-s", "NO_EXIT_RUNTIME=1"
             ],
             "options": {
-                "cwd": "${workspaceFolder}/AVL Tree"
+                "cwd": "${workspaceFolder}/Binary Heap"
             },
             "group": {
                 "kind": "build",
