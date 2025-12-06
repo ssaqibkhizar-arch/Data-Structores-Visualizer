@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Binary Heap Visualizer | C++ WASM</title>
-    
+
     <!-- Link to the shared styling -->
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
     <!-- Top Navigation / Header -->
@@ -26,22 +28,23 @@
 
     <!-- Main Workspace Layout -->
     <div class="workspace">
-        
+
         <!-- LEFT SIDEBAR: Controls & Inputs -->
         <aside class="sidebar">
-            
+
             <!-- Section 1: Heap Settings -->
             <section class="panel-section">
                 <div class="section-header">
                     <h2>1. Heap Settings</h2>
                 </div>
-                <div class="control-row" style="background: #f3f4f6; padding: 10px; border-radius: 6px; justify-content: space-around;">
+                <div class="control-row"
+                    style="background: #f3f4f6; padding: 10px; border-radius: 6px; justify-content: space-around;">
                     <label style="cursor: pointer; display: flex; align-items: center; gap: 5px;">
-                        <input type="radio" name="heapType" value="min" checked onchange="toggleHeapMode(1)"> 
+                        <input type="radio" name="heapType" value="min" checked onchange="toggleHeapMode(1)">
                         Min Heap
                     </label>
                     <label style="cursor: pointer; display: flex; align-items: center; gap: 5px;">
-                        <input type="radio" name="heapType" value="max" onchange="toggleHeapMode(0)"> 
+                        <input type="radio" name="heapType" value="max" onchange="toggleHeapMode(0)">
                         Max Heap
                     </label>
                 </div>
@@ -53,7 +56,7 @@
                     <h2>2. Operations</h2>
                 </div>
                 <p class="helper-text">Insert values or extract the root.</p>
-                
+
                 <div class="input-group">
                     <label>Node Value</label>
                     <div class="control-row">
@@ -65,7 +68,8 @@
                     <!-- 'Delete' effectively extracts the root in a Heap -->
                     <button id="extractBtn" class="btn danger-btn" style="width: 100%;">Extract Root</button>
                 </div>
-                <button id="generateRandomBtn" class="btn secondary-btn" style="width: 100%; margin-top: 0.5rem;">Insert Random</button>
+                <button id="generateRandomBtn" class="btn secondary-btn" style="width: 100%; margin-top: 0.5rem;">Insert
+                    Random</button>
             </section>
 
             <!-- Section 3: Statistics -->
@@ -74,7 +78,8 @@
                 <div id="complexityDisplay">
                     <div class="algo-name">Size: <span class="big-o" id="nodeCount">0</span></div>
                     <!-- Height of a binary heap is always floor(log2(n)) -->
-                    <div class="algo-name" style="margin-top:5px; font-size: 0.8em; color:#666;">Structure: <span id="balanceStatus">Complete Tree</span></div>
+                    <div class="algo-name" style="margin-top:5px; font-size: 0.8em; color:#666;">Structure: <span
+                            id="balanceStatus">Complete Tree</span></div>
                 </div>
             </section>
 
@@ -86,17 +91,21 @@
 
         <!-- RIGHT AREA: Visualization & Logs -->
         <main class="main-display" id="visualizerArea">
-            
+
             <!-- NEW: Array Visualization Container -->
-            <div id="array-container" style="width: 100%; height: 60px; background: white; border-bottom: 1px solid #e5e7eb; display: flex; align-items: center; padding: 0 20px; overflow-x: auto; white-space: nowrap; gap: 5px;">
-                <span style="font-size: 0.8rem; font-weight: bold; color: #6b7280; margin-right: 10px;">ARRAY VIEW:</span>
+            <div id="array-container"
+                style="width: 100%; height: 60px; background: white; border-bottom: 1px solid #e5e7eb; display: flex; align-items: center; padding: 0 20px; overflow-x: auto; white-space: nowrap; gap: 5px;">
+                <span style="font-size: 0.8rem; font-weight: bold; color: #6b7280; margin-right: 10px;">ARRAY
+                    VIEW:</span>
                 <!-- Array bars will be injected here by JS -->
                 <div id="array-visualizer" style="display: flex; gap: 4px;"></div>
             </div>
 
             <!-- Canvas Wrapper -->
             <div class="canvas-container">
-                <div id="tree-canvas" style="width:100%; height:100%; display:flex; justify-content:center; align-items:flex-start; padding-top:20px;"></div>
+                <div id="tree-canvas"
+                    style="width:100%; height:100%; display:flex; justify-content:center; align-items:flex-start; padding-top:20px;">
+                </div>
                 <div class="canvas-overlay">D3.js Visualization Layer</div>
             </div>
 
@@ -110,28 +119,29 @@
                     <div class="log-entry system">> Initializing WebAssembly Environment...</div>
                 </div>
             </div>
-            
+
         </main>
     </div>
 
     <!-- SCRIPTS CONFIGURATION -->
     <script>
         var Module = {
-            onRuntimeInitialized: function() {
+            onRuntimeInitialized: function () {
                 if (typeof onReady === 'function') {
                     onReady();
                 }
             }
         };
     </script>
-    
+
     <!-- D3.js for Tree Rendering -->
     <script src="https://d3js.org/d3.v7.min.js"></script>
-    
+
     <!-- WASM Glue Code (Compiled from C++) -->
     <script src="main.js"></script>
-    
+
     <!-- Frontend Logic -->
     <script src="script.js"></script>
 </body>
+
 </html>

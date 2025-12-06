@@ -13,12 +13,12 @@ using namespace std;
 
 class Heap
 {
-    int* arr;
+    int *arr;
     int capacity;
     int size;
 
     // Helper to swap nodes
-    void swap(int& a, int& b)
+    void swap(int &a, int &b)
     {
         int temp = a;
         a = b;
@@ -27,7 +27,8 @@ class Heap
 
     void percolateUPMin(int i)
     {
-        if (i <= 1) return; // Root logic for 1-based indexing
+        if (i <= 1)
+            return; // Root logic for 1-based indexing
         int parent = i / 2;
         if (arr[parent] > arr[i])
         {
@@ -38,7 +39,8 @@ class Heap
 
     void percolateUPMax(int i)
     {
-        if (i <= 1) return;
+        if (i <= 1)
+            return;
         int parent = i / 2;
         if (arr[parent] < arr[i])
         {
@@ -53,8 +55,10 @@ class Heap
         int right = (2 * i) + 1;
         int smallest = i;
 
-        if (left <= size && arr[left] < arr[smallest]) smallest = left;
-        if (right <= size && arr[right] < arr[smallest]) smallest = right;
+        if (left <= size && arr[left] < arr[smallest])
+            smallest = left;
+        if (right <= size && arr[right] < arr[smallest])
+            smallest = right;
 
         if (smallest != i)
         {
@@ -69,8 +73,10 @@ class Heap
         int right = (2 * i) + 1;
         int largest = i;
 
-        if (left <= size && arr[left] > arr[largest]) largest = left;
-        if (right <= size && arr[right] > arr[largest]) largest = right;
+        if (left <= size && arr[left] > arr[largest])
+            largest = left;
+        if (right <= size && arr[right] > arr[largest])
+            largest = right;
 
         if (largest != i)
         {
@@ -81,8 +87,10 @@ class Heap
     }
 
     // Helper for JSON: Converts index to recursive tree JSON
-    void nodeToJSON(int i, stringstream& ss) {
-        if (i > size) {
+    void nodeToJSON(int i, stringstream &ss)
+    {
+        if (i > size)
+        {
             ss << "null";
             return;
         }
@@ -91,13 +99,13 @@ class Heap
         ss << "\"value\": " << arr[i] << ",";
         ss << "\"index\": " << i << ","; // Useful for array visualization
         ss << "\"children\": [";
-        
+
         // Left Child
         nodeToJSON(2 * i, ss);
         ss << ",";
         // Right Child
         nodeToJSON(2 * i + 1, ss);
-        
+
         ss << "]}";
     }
 
@@ -117,7 +125,8 @@ public:
 
     void insertMin(int val)
     {
-        if (size >= capacity - 1) return; // Full
+        if (size >= capacity - 1)
+            return; // Full
         size++;
         arr[size] = val;
         percolateUPMin(size);
@@ -125,7 +134,8 @@ public:
 
     void insertMax(int val)
     {
-        if (size >= capacity - 1) return; // Full
+        if (size >= capacity - 1)
+            return; // Full
         size++;
         arr[size] = val;
         percolateUPMax(size);
@@ -134,7 +144,8 @@ public:
     // FIX: Completed logic
     int extractMin()
     {
-        if (size == 0) return -1;
+        if (size == 0)
+            return -1;
         int root = arr[1];
         arr[1] = arr[size];
         size--;
@@ -145,7 +156,8 @@ public:
     // Added Extract Max
     int extractMax()
     {
-        if (size == 0) return -1;
+        if (size == 0)
+            return -1;
         int root = arr[1];
         arr[1] = arr[size];
         size--;
@@ -156,7 +168,8 @@ public:
     // Returns the Tree Structure JSON for D3
     string getTreeJSON()
     {
-        if (size == 0) return "null";
+        if (size == 0)
+            return "null";
         stringstream ss;
         nodeToJSON(1, ss);
         return ss.str();
@@ -167,90 +180,105 @@ public:
     {
         stringstream ss;
         ss << "[";
-        for(int i = 1; i <= size; i++) {
+        for (int i = 1; i <= size; i++)
+        {
             ss << arr[i];
-            if(i < size) ss << ",";
+            if (i < size)
+                ss << ",";
         }
         ss << "]";
         return ss.str();
     }
-    
+
     // Convert current heap to Min or Max (Heapify All)
     void rebuild(bool isMin)
     {
         // Floyd's building algorithm: start from last parent down to root
-        for (int i = size / 2; i >= 1; i--) {
-            if (isMin) percolateDownMin(i);
-            else percolateDownMax(i);
+        for (int i = size / 2; i >= 1; i--)
+        {
+            if (isMin)
+                percolateDownMin(i);
+            else
+                percolateDownMax(i);
         }
     }
-    
+
     void clear() { size = 0; }
 };
 
 // --- Web Interface ---
 
-Heap* heap = nullptr;
+Heap *heap = nullptr;
 string buffer;
 bool isMinMode = true; // Toggle state
 
-extern "C" 
+extern "C"
 {
     EMSCRIPTEN_KEEPALIVE
-    void initHeap() 
+    void initHeap()
     {
-        if (heap) delete heap;
+        if (heap)
+            delete heap;
         // Initialize with capacity 100
-        heap = new Heap(100); 
+        heap = new Heap(100);
         isMinMode = true;
     }
 
     EMSCRIPTEN_KEEPALIVE
-    void toggleMode(int isMin) 
+    void toggleMode(int isMin)
     {
         isMinMode = (isMin == 1);
-        if (heap) heap->rebuild(isMinMode);
+        if (heap)
+            heap->rebuild(isMinMode);
     }
 
     EMSCRIPTEN_KEEPALIVE
-    const char* insertNode(int val) 
+    const char *insertNode(int val)
     {
-        if (!heap) initHeap();
-        
-        if (isMinMode) heap->insertMin(val);
-        else heap->insertMax(val);
+        if (!heap)
+            initHeap();
+
+        if (isMinMode)
+            heap->insertMin(val);
+        else
+            heap->insertMax(val);
 
         buffer = heap->getTreeJSON();
         return buffer.c_str();
     }
 
     EMSCRIPTEN_KEEPALIVE
-    const char* deleteNode(int val) 
+    const char *deleteNode(int val)
     {
-        // Note: Heaps usually only extract root (Min/Max). 
+        // Note: Heaps usually only extract root (Min/Max).
         // We will treat "deleteNode" as "Extract Root" regardless of the 'val' passed.
-        if (!heap) return "null";
-        
-        if (isMinMode) heap->extractMin();
-        else heap->extractMax();
+        if (!heap)
+            return "null";
+
+        if (isMinMode)
+            heap->extractMin();
+        else
+            heap->extractMax();
 
         buffer = heap->getTreeJSON();
         return buffer.c_str();
     }
 
     EMSCRIPTEN_KEEPALIVE
-    const char* getHeapJSON() 
+    const char *getHeapJSON()
     {
-        if (!heap) return "null";
+        if (!heap)
+            return "null";
         buffer = heap->getTreeJSON();
         return buffer.c_str();
     }
-    
+
     // New: Get the flat array for visualization
     EMSCRIPTEN_KEEPALIVE
-    const char* getArrayData()
+    const char *getArrayData()
     {
-        if (!heap) return "[]";
+        if (!heap)
+            return "[]";
         buffer = heap->getArrayJSON();
         return buffer.c_str();
     }

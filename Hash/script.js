@@ -34,11 +34,11 @@ let bucketSelections = [];
 
 // --- Initialization ---
 
-window.onload = function() {
+window.onload = function () {
     initD3();
     setupEventListeners();
     setupDraggable();
-    
+
     // Check if Module loaded fast
     if (typeof Module !== 'undefined' && Module.runtimeInitialized) {
         onWasmReady();
@@ -50,12 +50,12 @@ function onWasmReady() {
     Module.ccall('initHashTable', null, ['number'], [currentCapacity]);
     const status = document.getElementById('systemStatus');
     if (status) status.innerHTML = '<span class="status-dot ready"></span> System: Ready';
-    
+
     logConsole(">> WASM Core Loaded. Hash Table (Size 12) Ready.");
-    
+
     // Initialize Hash Table in C++
     Module.ccall('initHashTable', null, ['number'], [TABLE_CAPACITY]);
-    
+
     // Initial Render
     refreshTable();
 }
@@ -95,7 +95,7 @@ function setupEventListeners() {
     document.getElementById('generateRandomBtn').onclick = handleRandom;
     document.getElementById('clearBtn').onclick = handleClear;
     document.getElementById('resizeBtn').onclick = handleResize;
-    
+
     document.getElementById('btnClearConsole').onclick = () => {
         document.getElementById('outputConsole').innerHTML = '<div class="log-entry system">>> Console Cleared.</div>';
     };
@@ -113,14 +113,14 @@ async function handleInsert() {
     if (!isWasmReady) return;
     const input = document.getElementById('nodeValue');
     const val = parseInt(input.value);
-    
+
     if (isNaN(val)) {
         alert("Please enter a valid number");
         return;
     }
 
     logConsole(`>> Inserting ${val}...`);
-    
+
     // Disable buttons during animation
     toggleControls(false);
 
@@ -130,7 +130,7 @@ async function handleInsert() {
 
     // Animate
     await animateSequence(steps);
-    
+
     // Refresh to ensure final consistency
     refreshTable();
     toggleControls(true);
@@ -142,7 +142,7 @@ async function handleSearch() {
     if (!isWasmReady) return;
     const input = document.getElementById('nodeValue');
     const val = parseInt(input.value);
-    
+
     if (isNaN(val)) return;
 
     logConsole(`>> Searching for ${val}...`);
@@ -152,7 +152,7 @@ async function handleSearch() {
     const steps = JSON.parse(logStr);
 
     await animateSequence(steps);
-    
+
     // Clean up highlights after a short delay, but don't rebuild entire table
     setTimeout(() => {
         d3.selectAll('.bucket-rect').classed('highlight-found', false).classed('highlight-scan', false);
@@ -230,7 +230,7 @@ function renderTable(data) {
         data.forEach((d, i) => {
             if (d.chain && d.chain.length > 0) {
                 const parentGroup = d3.select(`#bucket-${d.index}`);
-                
+
                 // Draw connecting line from bucket to first node
                 parentGroup.append("line")
                     .attr("class", "chain-link")
@@ -242,7 +242,7 @@ function renderTable(data) {
                 // Draw Chain Nodes
                 d.chain.forEach((val, cIdx) => {
                     const yPos = CONFIG.bucketHeight + CONFIG.chainSpacing + (cIdx * CONFIG.chainSpacing);
-                    
+
                     const chainGroup = parentGroup.append("g")
                         .attr("class", "chain-node-group")
                         .attr("id", `chain-${d.index}-${cIdx}`) // ID for animation
@@ -250,7 +250,7 @@ function renderTable(data) {
 
                     // Link to next node (if exists)
                     if (cIdx < d.chain.length - 1) {
-                         parentGroup.append("line")
+                        parentGroup.append("line")
                             .attr("class", "chain-link")
                             .attr("x1", CONFIG.bucketWidth / 2)
                             .attr("y1", yPos + CONFIG.chainRadius) // bottom of current circle
@@ -280,7 +280,7 @@ async function animateSequence(steps) {
 
     for (let i = 0; i < steps.length; i++) {
         const step = steps[i];
-        
+
         // Handle "Full" error case
         if (step.index === -1) {
             logConsole(`Error: Table is full. Cannot insert ${step.val}.`);
@@ -290,27 +290,27 @@ async function animateSequence(steps) {
 
         const bucketSel = d3.select(`#bucket-${step.index} .bucket-rect`);
         const textSel = d3.select(`#bucket-${step.index} .bucket-text`);
-        
+
         // Log status
         if (step.status === 'collision') logConsole(`Collision at index ${step.index} (Value: ${step.val})`);
         else if (step.status === 'inserted') logConsole(`Inserted ${step.val} at index ${step.index}`);
         else if (step.status === 'traversing') logConsole(`Traversing chain at index ${step.index}...`);
 
         // --- Visual Effects based on Status ---
-        
+
         // 1. Collision (Red Shake)
         if (step.status === 'collision') {
             bucketSel.classed("highlight-collision", true);
             await wait(400);
             bucketSel.classed("highlight-collision", false);
         }
-        
+
         // 2. Traversing Chain (Highlight Nodes)
         else if (step.status === 'traversing') {
             // Find the specific chain node containing this value or just flash the bucket
             // For simplicity, we flash the bucket to show we are visiting this index
             bucketSel.classed("highlight-scan", true);
-            
+
             // Try to find the specific node in DOM if it exists (for search)
             // Note: This requires complex matching if values aren't unique, keeping simple for now
             await wait(300);
@@ -320,13 +320,13 @@ async function animateSequence(steps) {
         // 3. Inserted / Inserted Chain (Green Success)
         else if (step.status === 'inserted' || step.status === 'inserted_chain') {
             bucketSel.classed("highlight-found", true);
-            
+
             if (step.status === 'inserted') {
-                 // Open Addressing: Update text immediately for visual feedback
-                 textSel.text(step.val).classed("placeholder", false);
+                // Open Addressing: Update text immediately for visual feedback
+                textSel.text(step.val).classed("placeholder", false);
             }
             // For chaining, the full refreshTable() at end of sequence will draw the new node
-            
+
             await wait(CONFIG.animSpeed);
             bucketSel.classed("highlight-found", false);
         }
@@ -365,9 +365,9 @@ function updateStats(data) {
 
     const loadFactor = (occupied / currentCapacity).toFixed(2);
     const capDisplay = document.getElementById('capacityDisplay'); // Ensure this ID exists in HTML
-    if(capDisplay) capDisplay.innerText = currentCapacity;
+    if (capDisplay) capDisplay.innerText = currentCapacity;
     document.getElementById('loadFactor').innerText = loadFactor;
-    
+
     // Update color of load factor based on threshold
     const lfEl = document.getElementById('loadFactor');
     if (loadFactor > 0.7) lfEl.style.color = CONFIG.colors.collision;
@@ -398,8 +398,8 @@ function toggleControls(enable) {
 function setupDraggable() {
     const el = document.getElementById('floatingConsole');
     const handle = document.getElementById('dragHandle');
-    if(!el || !handle) return;
-    
+    if (!el || !handle) return;
+
     let isDragging = false;
     let offset = { x: 0, y: 0 };
 
@@ -414,7 +414,7 @@ function setupDraggable() {
         if (!isDragging) return;
         el.style.left = (e.clientX - offset.x) + 'px';
         el.style.top = (e.clientY - offset.y) + 'px';
-        el.style.bottom = 'auto'; 
+        el.style.bottom = 'auto';
         el.style.right = 'auto';
     });
 
@@ -425,7 +425,7 @@ function setupDraggable() {
 }
 function handleResize() {
     if (!isWasmReady) return;
-    
+
     const input = document.getElementById('tableCapacity');
     let newSize = parseInt(input.value);
 
@@ -435,7 +435,7 @@ function handleResize() {
         return;
     }
     if (newSize > 50) {
-        if(!confirm("Large sizes might require scrolling. Continue?")) return;
+        if (!confirm("Large sizes might require scrolling. Continue?")) return;
     }
 
     currentCapacity = newSize;
@@ -443,7 +443,7 @@ function handleResize() {
 
     // Re-initialize C++ Backend with new size
     Module.ccall('initHashTable', null, ['number'], [currentCapacity]);
-    
+
     // Refresh Visualization
     refreshTable();
 }

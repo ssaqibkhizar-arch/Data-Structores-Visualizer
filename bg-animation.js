@@ -20,7 +20,7 @@ const CONFIG = {
     colors: {
         base: 'rgba(148, 163, 184)', // Slate-400
         // Brand colors for "Hero" nodes: Hash, Graph, AVL, Heap
-        heroes: ['#8b5cf6', '#3b82f6', '#10b981', '#f59e0b'] 
+        heroes: ['#8b5cf6', '#3b82f6', '#10b981', '#f59e0b']
     }
 };
 
@@ -33,17 +33,17 @@ let mouse = { x: null, y: null };
 function setupCanvas() {
     width = window.innerWidth;
     height = window.innerHeight;
-    
+
     // Calculate proper density
     const dpr = window.devicePixelRatio || 1;
-    
+
     // Set actual size in memory (scaled to account for extra pixels)
     canvas.width = width * dpr;
     canvas.height = height * dpr;
-    
+
     // Normalize coordinate system to use css pixels
     ctx.scale(dpr, dpr);
-    
+
     // Set visible size
     canvas.style.width = `${width}px`;
     canvas.style.height = `${height}px`;
@@ -51,7 +51,7 @@ function setupCanvas() {
     // Calculate optimal particle count: 1 particle per 15,000 pixels
     const area = width * height;
     CONFIG.particleCount = Math.floor(area / 15000);
-    
+
     initParticles();
 }
 
@@ -64,20 +64,20 @@ class Particle {
     reset(randomizePosition = false) {
         this.x = randomizePosition ? Math.random() * width : Math.random() * width;
         this.y = randomizePosition ? Math.random() * height : Math.random() * height;
-        
+
         // Physics properties
         this.vx = (Math.random() - 0.5) * CONFIG.baseSpeed;
         this.vy = (Math.random() - 0.5) * CONFIG.baseSpeed;
-        
+
         // Visual properties
         this.size = Math.random() * 2 + 1;
-        
+
         // 15% chance to be a "Hero Node" (Colored), otherwise standard Slate
         const isHero = Math.random() < 0.15;
-        this.color = isHero 
+        this.color = isHero
             ? CONFIG.colors.heroes[Math.floor(Math.random() * CONFIG.colors.heroes.length)]
             : CONFIG.colors.base;
-            
+
         this.isHero = isHero;
     }
 
@@ -97,16 +97,16 @@ class Particle {
                 const forceDirectionX = dx / distance;
                 const forceDirectionY = dy / distance;
                 const force = (CONFIG.mouseDist - distance) / CONFIG.mouseDist;
-                
+
                 // "Pull" strength
-                const pull = 0.8; 
+                const pull = 0.8;
                 this.vx += forceDirectionX * force * 0.03 * pull;
                 this.vy += forceDirectionY * force * 0.03 * pull;
             }
         }
 
         // 3. Friction (Damping) - Keeps particles from accelerating infinitely
-        this.vx *= 0.99; 
+        this.vx *= 0.99;
         this.vy *= 0.99;
 
         // 4. Boundary Wrap (Pac-Man style)
@@ -119,7 +119,7 @@ class Particle {
     draw() {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        
+
         // Hero nodes get full opacity, base nodes are subtle
         ctx.fillStyle = this.isHero ? this.color : `${this.color}, 0.5)`;
         ctx.fill();
@@ -155,17 +155,17 @@ function animate() {
 
             if (dist < CONFIG.connectionDist) {
                 ctx.beginPath();
-                
+
                 // Opacity based on distance (closer = stronger)
                 let opacity = 1 - (dist / CONFIG.connectionDist);
-                
+
                 // If either node is a Hero, tint the line slightly
                 if (p.isHero || p2.isHero) {
                     ctx.strokeStyle = `rgba(139, 92, 246, ${opacity * 0.2})`; // Subtle Violet tint
                 } else {
                     ctx.strokeStyle = `rgba(148, 163, 184, ${opacity * 0.15})`; // Slate Gray
                 }
-                
+
                 ctx.lineWidth = 1;
                 ctx.moveTo(p.x, p.y);
                 ctx.lineTo(p2.x, p2.y);

@@ -1,27 +1,25 @@
 /* --- 1. Variables & Reset --- */
 :root {
-    /* Color Palette */
+    /* Color Palette - GRAPH THEME (Royal Blue) */
     --primary-color: #2563eb;
     /* Royal Blue */
     --primary-hover: #1d4ed8;
+    /* Darker Blue */
     --secondary-color: #4b5563;
     /* Cool Gray */
     --secondary-hover: #374151;
     --accent-color: #10b981;
-    /* Emerald Green */
+    /* Emerald Green (Success) */
+    --warning-color: #f59e0b;
+    /* Amber (Processing) */
     --danger-color: #ef4444;
     /* Red */
 
     --bg-body: #f3f4f6;
-    /* Light Gray Background */
     --bg-panel: #ffffff;
-    /* White Panels */
     --border-color: #e5e7eb;
-    /* Light Border */
     --text-main: #111827;
-    /* Almost Black */
     --text-muted: #6b7280;
-    /* Gray Text */
 
     --console-bg: #1f2937;
     /* Dark Gray Console */
@@ -47,7 +45,6 @@ body {
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    /* Prevent full page scroll */
 }
 
 /* --- 2. Header --- */
@@ -110,24 +107,21 @@ body {
     width: 8px;
     height: 8px;
     background-color: #fbbf24;
-    /* Amber loading */
     border-radius: 50%;
 }
 
 .status-dot.ready {
     background-color: var(--accent-color);
-    /* Green ready */
     box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
 }
 
-/* --- 3. Workspace Layout --- */
+/* --- 3. Layout --- */
 .workspace {
     display: flex;
     flex: 1;
     overflow: hidden;
 }
 
-/* --- Sidebar --- */
 .sidebar {
     width: 320px;
     background-color: var(--bg-panel);
@@ -172,7 +166,7 @@ body {
     margin: -0.5rem 0 0 0;
 }
 
-/* Inputs & Buttons */
+/* --- Inputs --- */
 .input-group label,
 .small-input label {
     display: block;
@@ -203,6 +197,7 @@ input[type="number"]:focus {
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
+/* Buttons */
 .btn {
     padding: 0.5rem 1rem;
     border: none;
@@ -233,7 +228,25 @@ input[type="number"]:focus {
     background-color: var(--secondary-hover);
 }
 
-/* Weighted Toggle Switch */
+.danger-btn {
+    background-color: var(--danger-color);
+    color: white;
+}
+
+.danger-btn:hover {
+    background-color: #dc2626;
+}
+
+.info-btn {
+    background-color: var(--accent-color);
+    color: white;
+}
+
+.info-btn:hover {
+    background-color: #059669;
+}
+
+/* Toggles */
 .toggle-switch {
     display: flex;
     align-items: center;
@@ -281,7 +294,6 @@ input[type="number"]:focus {
     color: var(--text-muted);
 }
 
-/* Edge Inputs Layout */
 .edge-inputs {
     display: flex;
     gap: 0.5rem;
@@ -291,12 +303,11 @@ input[type="number"]:focus {
     flex: 1;
 }
 
-/* Hide element utility class (used by JS) */
 .hidden {
     display: none !important;
 }
 
-/* Algo Grid */
+/* Grid & Stats */
 .algo-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -315,7 +326,6 @@ input[type="number"]:focus {
     background-color: #eff6ff;
 }
 
-/* Complexity Box */
 .complexity-box {
     background: #f8fafc;
     border-radius: var(--radius);
@@ -323,7 +333,6 @@ input[type="number"]:focus {
     padding: 1rem;
     text-align: center;
     border-bottom: 1px solid var(--border-color) !important;
-    /* Override section style */
 }
 
 .complexity-box h3 {
@@ -351,11 +360,10 @@ input[type="number"]:focus {
     font-weight: 700;
 }
 
-/* --- Main Display Area --- */
+/* --- 4. Main Display --- */
 .main-display {
     flex: 1;
     position: relative;
-    /* Essential for floating elements inside */
     background-color: #f3f4f6;
     background-image: radial-gradient(#d1d5db 1px, transparent 1px);
     background-size: 20px 20px;
@@ -364,13 +372,10 @@ input[type="number"]:focus {
 
 .canvas-container {
     width: 100%;
-    /* Takes full width */
     height: 100%;
-    /* Takes full height */
     display: flex;
     justify-content: center;
     align-items: center;
-    /* Removed margin/flex constraints */
 }
 
 .canvas-overlay {
@@ -385,33 +390,19 @@ input[type="number"]:focus {
     pointer-events: none;
 }
 
-/* Console */
-/* --- Floating Glassmorphic Console (Refined) --- */
+/* --- 5. Console & Output (Updated Colors) --- */
 .console-container {
     position: absolute;
     bottom: 20px;
     right: 20px;
     width: 360px;
-    /* Slightly wider for readability */
     height: 280px;
-
-    /* Professional Dark Glass */
     background: rgba(15, 23, 42, 0.85);
-    /* Darker Slate */
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-
-    /* Subtle Border Gradient */
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-top: 1px solid rgba(255, 255, 255, 0.15);
-    /* Light top border for depth */
-
-    box-shadow:
-        0 4px 6px -1px rgba(0, 0, 0, 0.1),
-        0 2px 4px -1px rgba(0, 0, 0, 0.06),
-        0 20px 25px -5px rgba(0, 0, 0, 0.5);
-    /* Deep shadow */
-
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 20px 25px -5px rgba(0, 0, 0, 0.5);
     border-radius: 12px;
     display: flex;
     flex-direction: column;
@@ -420,11 +411,9 @@ input[type="number"]:focus {
     transition: transform 0.1s, box-shadow 0.2s;
 }
 
-/* Glow effect when active */
 .console-container.dragging {
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
     transform: scale(1.02);
-    /* Subtle pop */
     border-color: rgba(255, 255, 255, 0.2);
     cursor: grabbing;
 }
@@ -438,7 +427,6 @@ input[type="number"]:focus {
     cursor: grab;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     user-select: none;
-    /* Prevent text selection while dragging */
 }
 
 .console-header:active {
@@ -448,7 +436,6 @@ input[type="number"]:focus {
 
 .console-header span {
     color: #e2e8f0;
-    /* Light gray text */
     font-size: 0.75rem;
     font-weight: 700;
     text-transform: uppercase;
@@ -501,59 +488,79 @@ input[type="number"]:focus {
 
 .log-entry.system {
     color: #60a5fa;
-    /* Blue for system messages */
 }
 
-/* --- NEW: Output Panel Styling --- */
-
-/* Adjust the existing console to be bottom-right by default */
 #floatingConsole {
     top: auto;
     bottom: 20px;
 }
 
-/* Matrix Table Styling */
+/* --- OUTPUT PANEL: High Contrast Matrix & List --- */
+
+/* Matrix Table */
 .matrix-table {
     width: 100%;
     border-collapse: collapse;
     font-size: 0.8rem;
     text-align: center;
+    margin-top: 5px;
 }
 
 .matrix-table th,
 .matrix-table td {
     padding: 6px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
+/* Sharper borders */
+
 .matrix-table th {
-    background-color: rgba(255, 255, 255, 0.1);
-    color: var(--primary-color);
+    background-color: rgba(37, 99, 235, 0.2);
+    /* Transparent Blue */
+    color: #93c5fd;
+    /* Light Blue Text */
     font-weight: bold;
 }
 
-.matrix-table td.active-cell {
-    background-color: rgba(16, 185, 129, 0.2);
-    /* Green tint for connections */
-    color: #10b981;
+.matrix-table td {
+    color: #94a3b8;
+    /* Muted slate for zeros */
 }
 
-/* List Styling */
+.matrix-table td.active-cell {
+    background-color: rgba(16, 185, 129, 0.25);
+    /* Green tint bg */
+    color: #34d399;
+    /* Bright Green Text */
+    font-weight: 700;
+    border-color: rgba(16, 185, 129, 0.4);
+}
+
+/* Adjacency List */
 .adj-list-item {
-    padding: 4px 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    color: #e2e8f0;
+    /* White-ish text for node names */
 }
 
 .adj-arrow {
-    color: var(--primary-color);
-    margin: 0 5px;
+    color: #60a5fa;
+    /* Blue Arrow */
+    margin: 0 6px;
+    font-weight: bold;
 }
 
-/* --- NEW: Bottom Data Structure Panel --- */
+/* Weighted numbers in list */
+.adj-list-item span[style*="font-size"] {
+    color: #94a3b8 !important;
+    /* Make weight (w:5) gray */
+}
+
+/* --- 6. DS Panel (Stack/Queue) --- */
 .ds-panel {
     position: fixed;
     bottom: -150px;
-    /* Hidden by default */
     left: 50%;
     transform: translateX(-50%);
     width: 600px;
@@ -572,7 +579,6 @@ input[type="number"]:focus {
 
 .ds-panel.active {
     bottom: 0;
-    /* Slide up */
 }
 
 .ds-header {
@@ -604,7 +610,6 @@ input[type="number"]:focus {
     height: 100%;
 }
 
-/* Individual Data Blocks */
 .ds-block {
     min-width: 40px;
     height: 40px;
@@ -638,7 +643,6 @@ input[type="number"]:focus {
     }
 }
 
-/* Scrollbar for the panel */
 .ds-content::-webkit-scrollbar {
     height: 4px;
 }

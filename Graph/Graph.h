@@ -5,12 +5,11 @@
 #include <climits>
 using namespace std;
 
-
 template <typename T>
 struct SNode
 {
     T data;
-    SNode<T>* next;
+    SNode<T> *next;
 
     SNode(T value)
     {
@@ -22,7 +21,7 @@ struct SNode
 template <typename T>
 class Stack
 {
-    SNode<T>* front;
+    SNode<T> *front;
 
 public:
     Stack()
@@ -32,10 +31,10 @@ public:
 
     ~Stack()
     {
-        SNode<T>* currNode = front;
+        SNode<T> *currNode = front;
         while (currNode)
         {
-            SNode<T>* nextNode = currNode->next;
+            SNode<T> *nextNode = currNode->next;
             delete currNode;
             currNode = nextNode;
         }
@@ -44,7 +43,7 @@ public:
 
     void push(T v)
     {
-        SNode<T>* newNode = new SNode<T>(v);
+        SNode<T> *newNode = new SNode<T>(v);
         if (!front)
         {
             front = newNode;
@@ -56,31 +55,33 @@ public:
 
     void pop()
     {
-        if (!front) return;
-        SNode<T>* tempNode = front;
+        if (!front)
+            return;
+        SNode<T> *tempNode = front;
         front = front->next;
         delete tempNode;
     }
 
     T top()
     {
-        if (front) return front->data;
+        if (front)
+            return front->data;
         return T();
     }
 
     bool isEmpty()
     {
-        if (!front) return true;
+        if (!front)
+            return true;
         return false;
     }
 };
-
 
 template <typename T>
 struct QNode
 {
     T data;
-    QNode<T>* next;
+    QNode<T> *next;
 
     QNode(T value)
     {
@@ -92,8 +93,8 @@ struct QNode
 template <typename T>
 class Queue
 {
-    QNode<T>* front;
-    QNode<T>* rear;
+    QNode<T> *front;
+    QNode<T> *rear;
 
 public:
     Queue()
@@ -103,10 +104,10 @@ public:
 
     ~Queue()
     {
-        QNode<T>* currNode = front;
+        QNode<T> *currNode = front;
         while (currNode)
         {
-            QNode<T>* nextNode = currNode->next;
+            QNode<T> *nextNode = currNode->next;
             delete currNode;
             currNode = nextNode;
         }
@@ -115,7 +116,7 @@ public:
 
     void enqueue(T v)
     {
-        QNode<T>* newNode = new QNode<T>(v);
+        QNode<T> *newNode = new QNode<T>(v);
         if (!rear)
         {
             front = rear = newNode;
@@ -127,16 +128,19 @@ public:
 
     void dequeue()
     {
-        if (!front) return;
-        QNode<T>* tempNode = front;
+        if (!front)
+            return;
+        QNode<T> *tempNode = front;
         front = front->next;
-        if (!front) rear = nullptr;
+        if (!front)
+            rear = nullptr;
         delete tempNode;
     }
 
     T getFront()
     {
-        if (front) return front->data;
+        if (front)
+            return front->data;
         return T();
     }
 
@@ -146,13 +150,12 @@ public:
     }
 };
 
-
 template <typename T>
 struct Node
 {
     T destination;
     T weight;
-    Node<T>* next;
+    Node<T> *next;
 
     Node(T dest, T w)
     {
@@ -165,8 +168,8 @@ struct Node
 template <typename T>
 class AdjList
 {
-    Node<T>* front;
-    Node<T>* rear;
+    Node<T> *front;
+    Node<T> *rear;
 
 public:
     AdjList()
@@ -176,10 +179,10 @@ public:
 
     ~AdjList()
     {
-        Node<T>* currNode = front;
+        Node<T> *currNode = front;
         while (currNode)
         {
-            Node<T>* tempNode = currNode->next;
+            Node<T> *tempNode = currNode->next;
             delete currNode;
             currNode = tempNode;
         }
@@ -188,7 +191,7 @@ public:
 
     void AddEdge(T dest, T w)
     {
-        Node<T>* newNode = new Node<T>(dest, w);
+        Node<T> *newNode = new Node<T>(dest, w);
         if (!front)
         {
             front = rear = newNode;
@@ -198,12 +201,11 @@ public:
         front = newNode;
     }
 
-    Node<T>* getHead()
+    Node<T> *getHead()
     {
         return front;
     }
 };
-
 
 template <typename T>
 struct HNode
@@ -222,7 +224,7 @@ template <typename T>
 class Heap
 {
 private:
-    HNode<T>* arr;
+    HNode<T> *arr;
     int size;
     int capacity;
 
@@ -280,7 +282,8 @@ public:
 
     void InsertKey(T v, T k)
     {
-        if (size >= capacity) return;
+        if (size >= capacity)
+            return;
         size++;
         arr[size] = HNode<T>(v, k);
         percolateUp(size);
@@ -288,7 +291,8 @@ public:
 
     HNode<T> ExtractMin()
     {
-        if (size == 0) return HNode<T>();
+        if (size == 0)
+            return HNode<T>();
         HNode<T> minNode = arr[1];
         arr[1] = arr[size];
         size--;
@@ -297,19 +301,18 @@ public:
     }
 };
 
-
 class Graph
 {
     int vertices;
-    AdjList<int>* array;
-    int** AdjMat;
+    AdjList<int> *array;
+    int **AdjMat;
 
 public:
     Graph(int v)
     {
         vertices = v;
         array = new AdjList<int>[v];
-        AdjMat = new int* [v];
+        AdjMat = new int *[v];
 
         for (int i = 0; i < v; i++)
         {
@@ -343,10 +346,11 @@ public:
     }
 
     // BFS - Fills buffer with traversal order
-    void BFS(int startIndex, int* buffer)
+    void BFS(int startIndex, int *buffer)
     {
-        bool* visited = new bool[vertices];
-        for (int i = 0; i < vertices; i++) visited[i] = false;
+        bool *visited = new bool[vertices];
+        for (int i = 0; i < vertices; i++)
+            visited[i] = false;
 
         Queue<int> q;
         visited[startIndex] = true;
@@ -360,7 +364,7 @@ public:
             buffer[count++] = currVertex;
             q.dequeue();
 
-            Node<int>* temp = array[currVertex].getHead();
+            Node<int> *temp = array[currVertex].getHead();
             while (temp)
             {
                 int adjVertex = temp->destination;
@@ -375,11 +379,11 @@ public:
         delete[] visited;
     }
 
-   
-    void DFS(int startIndex, int* buffer)
+    void DFS(int startIndex, int *buffer)
     {
-        bool* visited = new bool[vertices];
-        for (int i = 0; i < vertices; i++) visited[i] = false;
+        bool *visited = new bool[vertices];
+        for (int i = 0; i < vertices; i++)
+            visited[i] = false;
 
         Stack<int> s;
         s.push(startIndex);
@@ -397,7 +401,7 @@ public:
                 visited[currVertex] = true;
             }
 
-            Node<int>* temp = array[currVertex].getHead();
+            Node<int> *temp = array[currVertex].getHead();
             while (temp)
             {
                 int AdjVertex = temp->destination;
@@ -411,12 +415,11 @@ public:
         delete[] visited;
     }
 
-    
-    void PrimsAlgorithm(int startIndex, int* parentBuffer)
+    void PrimsAlgorithm(int startIndex, int *parentBuffer)
     {
         Heap<int> h(vertices * vertices);
-        int* key = new int[vertices];
-        bool* visited = new bool[vertices];
+        int *key = new int[vertices];
+        bool *visited = new bool[vertices];
 
         for (int i = 0; i < vertices; i++)
         {
@@ -433,10 +436,11 @@ public:
             HNode<int> minNode = h.ExtractMin();
             int u = minNode.vertex;
 
-            if (visited[u]) continue;
+            if (visited[u])
+                continue;
             visited[u] = true;
 
-            Node<int>* temp = array[u].getHead();
+            Node<int> *temp = array[u].getHead();
             while (temp)
             {
                 int v = temp->destination;
@@ -454,12 +458,12 @@ public:
         delete[] visited;
     }
 
-
-    void DijkstraAlgorithm(int startIndex, int* distBuffer)
+    void DijkstraAlgorithm(int startIndex, int *distBuffer)
     {
         Heap<int> h(vertices * vertices);
 
-        for (int i = 0; i < vertices; i++) distBuffer[i] = INT_MAX;
+        for (int i = 0; i < vertices; i++)
+            distBuffer[i] = INT_MAX;
 
         distBuffer[startIndex] = 0;
         h.InsertKey(startIndex, 0);
@@ -470,9 +474,10 @@ public:
             int u = minNode.vertex;
             int d = minNode.key;
 
-            if (d > distBuffer[u]) continue;
+            if (d > distBuffer[u])
+                continue;
 
-            Node<int>* temp = array[u].getHead();
+            Node<int> *temp = array[u].getHead();
             while (temp)
             {
                 int v = temp->destination;

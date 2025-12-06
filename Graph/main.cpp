@@ -2,19 +2,22 @@
 #include "Graph.h"
 
 // This pointer will hold the memory address where we put results for JS to read
-int* outputBuffer = nullptr;
-Graph* globalGraph = nullptr;
+int *outputBuffer = nullptr;
+Graph *globalGraph = nullptr;
 
-extern "C" {
+extern "C"
+{
 
     EMSCRIPTEN_KEEPALIVE
     void initGraph(int vertices)
     {
-        if (globalGraph) delete globalGraph;
+        if (globalGraph)
+            delete globalGraph;
         globalGraph = new Graph(vertices);
-        
+
         // Re-allocate buffer for results
-        if (outputBuffer) delete[] outputBuffer;
+        if (outputBuffer)
+            delete[] outputBuffer;
         outputBuffer = new int[vertices];
     }
 
@@ -28,7 +31,7 @@ extern "C" {
     }
 
     EMSCRIPTEN_KEEPALIVE
-    int* getResultBuffer()
+    int *getResultBuffer()
     {
         return outputBuffer;
     }
@@ -36,25 +39,29 @@ extern "C" {
     EMSCRIPTEN_KEEPALIVE
     void runBFS(int startNode)
     {
-        if (globalGraph) globalGraph->BFS(startNode, outputBuffer);
+        if (globalGraph)
+            globalGraph->BFS(startNode, outputBuffer);
     }
 
     EMSCRIPTEN_KEEPALIVE
     void runDFS(int startNode)
     {
-        if (globalGraph) globalGraph->DFS(startNode, outputBuffer);
+        if (globalGraph)
+            globalGraph->DFS(startNode, outputBuffer);
     }
 
     EMSCRIPTEN_KEEPALIVE
     void runPrims(int startNode)
     {
-        if (globalGraph) globalGraph->PrimsAlgorithm(startNode, outputBuffer);
+        if (globalGraph)
+            globalGraph->PrimsAlgorithm(startNode, outputBuffer);
     }
 
     EMSCRIPTEN_KEEPALIVE
     void runDijkstra(int startNode)
     {
-        if (globalGraph) globalGraph->DijkstraAlgorithm(startNode, outputBuffer);
+        if (globalGraph)
+            globalGraph->DijkstraAlgorithm(startNode, outputBuffer);
     }
 }
 

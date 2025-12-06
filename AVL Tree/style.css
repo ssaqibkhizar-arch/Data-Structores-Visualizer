@@ -1,22 +1,30 @@
 /* --- 1. Variables & Reset --- */
 :root {
     /* Color Palette - UPDATED TO EMERALD THEME */
-    --primary-color: #10b981;       /* Emerald Green */
-    --primary-hover: #059669;       /* Darker Emerald */
-    --secondary-color: #4b5563;     /* Cool Gray (Unchanged) */
-    --secondary-hover: #374151;     /* (Unchanged) */
-    --accent-color: #3b82f6;        /* Blue (For contrast/Found state) */
-    --warning-color: #f59e0b;       /* Amber */
-    --danger-color: #ef4444;        /* Red */
-    
-    --bg-body: #f3f4f6;             
-    --bg-panel: #ffffff;            
-    --border-color: #e5e7eb;        
-    --text-main: #111827;           
-    --text-muted: #6b7280;          
-    
-    --console-bg: #1f2937;          
-    --console-text: #34d399;        /* Light Emerald Text */
+    --primary-color: #10b981;
+    /* Emerald Green */
+    --primary-hover: #059669;
+    /* Darker Emerald */
+    --secondary-color: #4b5563;
+    /* Cool Gray (Unchanged) */
+    --secondary-hover: #374151;
+    /* (Unchanged) */
+    --accent-color: #3b82f6;
+    /* Blue (For contrast/Found state) */
+    --warning-color: #f59e0b;
+    /* Amber */
+    --danger-color: #ef4444;
+    /* Red */
+
+    --bg-body: #f3f4f6;
+    --bg-panel: #ffffff;
+    --border-color: #e5e7eb;
+    --text-main: #111827;
+    --text-muted: #6b7280;
+
+    --console-bg: #1f2937;
+    --console-text: #34d399;
+    /* Light Emerald Text */
 
     --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
@@ -36,7 +44,8 @@ body {
     height: 100vh;
     display: flex;
     flex-direction: column;
-    overflow: hidden; /* Prevent full page scroll */
+    overflow: hidden;
+    /* Prevent full page scroll */
 }
 
 /* --- 2. Header --- */
@@ -79,7 +88,8 @@ body {
 }
 
 .badge {
-    background-color: #ecfdf5; /* Changed to Light Emerald */
+    background-color: #ecfdf5;
+    /* Changed to Light Emerald */
     color: var(--primary-color);
     font-size: 0.75rem;
     padding: 0.25rem 0.5rem;
@@ -98,12 +108,14 @@ body {
 .status-dot {
     width: 8px;
     height: 8px;
-    background-color: #fbbf24; /* Amber loading */
+    background-color: #fbbf24;
+    /* Amber loading */
     border-radius: 50%;
 }
 
 .status-dot.ready {
-    background-color: var(--primary-color); /* Green ready */
+    background-color: var(--primary-color);
+    /* Green ready */
     box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
 }
 
@@ -160,7 +172,8 @@ body {
 }
 
 /* Inputs & Buttons */
-.input-group label, .small-input label {
+.input-group label,
+.small-input label {
     display: block;
     font-size: 0.8rem;
     font-weight: 500;
@@ -205,7 +218,9 @@ input[type="number"]:focus {
     flex-grow: 1;
 }
 
-.primary-btn:hover { background-color: var(--primary-hover); }
+.primary-btn:hover {
+    background-color: var(--primary-hover);
+}
 
 .secondary-btn {
     background-color: var(--secondary-color);
@@ -213,19 +228,27 @@ input[type="number"]:focus {
     width: 100%;
 }
 
-.secondary-btn:hover { background-color: var(--secondary-hover); }
+.secondary-btn:hover {
+    background-color: var(--secondary-hover);
+}
 
 .danger-btn {
     background-color: var(--danger-color);
     color: white;
 }
-.danger-btn:hover { background-color: #dc2626; }
+
+.danger-btn:hover {
+    background-color: #dc2626;
+}
 
 .info-btn {
     background-color: var(--accent-color);
     color: white;
 }
-.info-btn:hover { background-color: #2563eb; }
+
+.info-btn:hover {
+    background-color: #2563eb;
+}
 
 
 /* Algo Grid */
@@ -248,7 +271,8 @@ input[type="number"]:focus {
 .algo-btn:hover {
     border-color: var(--primary-color);
     color: var(--primary-color);
-    background-color: #ecfdf5; /* Light Emerald */
+    background-color: #ecfdf5;
+    /* Light Emerald */
 }
 
 /* Complexity/Stats Box */
@@ -289,7 +313,8 @@ input[type="number"]:focus {
 /* --- Main Display Area --- */
 .main-display {
     flex: 1;
-    position: relative; /* Essential for floating elements */
+    position: relative;
+    /* Essential for floating elements */
     background-color: #f3f4f6;
     background-image: radial-gradient(#d1d5db 1px, transparent 1px);
     background-size: 20px 20px;
@@ -300,8 +325,10 @@ input[type="number"]:focus {
 
 .canvas-container {
     width: 100%;
-    flex: 1; /* Take remaining height */
-    overflow: hidden; /* Handle D3 Zoom/Pan instead */
+    flex: 1;
+    /* Take remaining height */
+    overflow: hidden;
+    /* Handle D3 Zoom/Pan instead */
     position: relative;
 }
 
@@ -322,20 +349,23 @@ input[type="number"]:focus {
 }
 
 .node circle:hover {
-    fill: #ecfdf5; /* Light Emerald */
+    fill: #ecfdf5;
+    /* Light Emerald */
     stroke-width: 3.5px;
 }
 
 /* Processing State (Amber) */
 .node.processing circle {
     stroke: var(--warning-color);
-    fill: #fffbeb; /* Light amber bg */
+    fill: #fffbeb;
+    /* Light amber bg */
 }
 
 /* Found/Visited State (Blue/Accent) */
 .node.found circle {
     stroke: var(--accent-color);
-    fill: #eff6ff; /* Light blue bg */
+    fill: #eff6ff;
+    /* Light blue bg */
 }
 
 /* Node Text */
@@ -350,7 +380,8 @@ input[type="number"]:focus {
 /* Links (Edges) */
 .link {
     fill: none;
-    stroke: #cbd5e1; /* Light Slate */
+    stroke: #cbd5e1;
+    /* Light Slate */
     stroke-width: 2px;
     transition: stroke 0.3s;
 }
@@ -367,7 +398,7 @@ input[type="number"]:focus {
     right: 15px;
     font-size: 0.75rem;
     color: var(--text-muted);
-    background: rgba(255,255,255,0.8);
+    background: rgba(255, 255, 255, 0.8);
     padding: 2px 6px;
     border-radius: 4px;
     pointer-events: none;
@@ -378,17 +409,18 @@ input[type="number"]:focus {
 .console-container {
     position: absolute;
     width: 360px;
-    height: 200px; /* Default height */
-    
+    height: 200px;
+    /* Default height */
+
     /* Dark Glass Effect */
     background: rgba(15, 23, 42, 0.9);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    
+
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
     border-radius: 12px;
-    
+
     display: flex;
     flex-direction: column;
     z-index: 100;
@@ -397,7 +429,7 @@ input[type="number"]:focus {
 
 .console-container.dragging {
     box-shadow: 0 20px 40px -5px rgba(0, 0, 0, 0.5);
-    border-color: rgba(255,255,255,0.2);
+    border-color: rgba(255, 255, 255, 0.2);
     cursor: grabbing;
 }
 
@@ -418,7 +450,7 @@ input[type="number"]:focus {
 }
 
 .console-header {
-    background: rgba(255,255,255,0.05);
+    background: rgba(255, 255, 255, 0.05);
     padding: 10px 15px;
     display: flex;
     justify-content: space-between;
@@ -428,7 +460,9 @@ input[type="number"]:focus {
     user-select: none;
 }
 
-.console-header:active { cursor: grabbing; }
+.console-header:active {
+    cursor: grabbing;
+}
 
 .console-header span {
     color: #e2e8f0;
@@ -447,7 +481,9 @@ input[type="number"]:focus {
     transition: color 0.2s;
 }
 
-.btn-text:hover { color: white; }
+.btn-text:hover {
+    color: white;
+}
 
 .console-body {
     padding: 1rem;
@@ -458,8 +494,14 @@ input[type="number"]:focus {
     flex: 1;
 }
 
-.log-entry { margin-bottom: 0.5rem; line-height: 1.4; }
-.log-entry.system { color: #60a5fa; }
+.log-entry {
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+}
+
+.log-entry.system {
+    color: #60a5fa;
+}
 
 /* --- 4. NEW: Heap Array Visualizer Specifics --- */
 
@@ -485,7 +527,7 @@ input[type="number"]:focus {
     font-size: 0.85rem;
     font-weight: 700;
     color: var(--primary-color);
-    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
     transition: all 0.3s;
 }
 
@@ -498,6 +540,13 @@ input[type="number"]:focus {
 
 /* Animations */
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-5px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

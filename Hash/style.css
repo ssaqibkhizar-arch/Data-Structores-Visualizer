@@ -1,22 +1,34 @@
 /* --- 1. Variables & Reset --- */
 :root {
     /* Color Palette */
-    --primary-color: #8b5cf6;       /* Violet (Hash Theme) */
+    --primary-color: #8b5cf6;
+    /* Violet (Hash Theme) */
     --primary-hover: #7c3aed;
-    --secondary-color: #64748b;     /* Slate */
+    --secondary-color: #64748b;
+    /* Slate */
     --secondary-hover: #475569;
-    --accent-color: #10b981;        /* Emerald Green (Success/Found) */
-    --warning-color: #f59e0b;       /* Amber (Collision/Processing) */
-    --danger-color: #ef4444;        /* Red (Delete/Error) */
-    
-    --bg-body: #f8fafc;             /* Very Light Slate Background */
-    --bg-panel: #ffffff;            /* White Panels */
-    --border-color: #e2e8f0;        /* Light Border */
-    --text-main: #1e293b;           /* Slate 800 */
-    --text-muted: #94a3b8;          /* Slate 400 */
-    
-    --console-bg: #0f172a;          /* Deep Slate Console */
-    --console-text: #10b981;        /* Matrix Green */
+    --accent-color: #10b981;
+    /* Emerald Green (Success/Found) */
+    --warning-color: #f59e0b;
+    /* Amber (Collision/Processing) */
+    --danger-color: #ef4444;
+    /* Red (Delete/Error) */
+
+    --bg-body: #f8fafc;
+    /* Very Light Slate Background */
+    --bg-panel: #ffffff;
+    /* White Panels */
+    --border-color: #e2e8f0;
+    /* Light Border */
+    --text-main: #1e293b;
+    /* Slate 800 */
+    --text-muted: #94a3b8;
+    /* Slate 400 */
+
+    --console-bg: #0f172a;
+    /* Deep Slate Console */
+    --console-text: #10b981;
+    /* Matrix Green */
 
     --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
@@ -36,7 +48,8 @@ body {
     height: 100vh;
     display: flex;
     flex-direction: column;
-    overflow: hidden; /* Prevent full page scroll */
+    overflow: hidden;
+    /* Prevent full page scroll */
 }
 
 /* --- 2. Header --- */
@@ -67,7 +80,8 @@ body {
 .logo-icon {
     width: 24px;
     height: 24px;
-    background: linear-gradient(135deg, var(--primary-color), #ec4899); /* Violet to Pink */
+    background: linear-gradient(135deg, var(--primary-color), #ec4899);
+    /* Violet to Pink */
     border-radius: 6px;
 }
 
@@ -98,12 +112,14 @@ body {
 .status-dot {
     width: 8px;
     height: 8px;
-    background-color: #fbbf24; /* Amber loading */
+    background-color: #fbbf24;
+    /* Amber loading */
     border-radius: 50%;
 }
 
 .status-dot.ready {
-    background-color: var(--accent-color); /* Green ready */
+    background-color: var(--accent-color);
+    /* Green ready */
     box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
 }
 
@@ -230,25 +246,26 @@ body {
 /* --- CHECKED STATE (Active) --- */
 
 /* Change border and background of the card */
-.strategy-group input[type="radio"]:checked + .strategy-card {
+.strategy-group input[type="radio"]:checked+.strategy-card {
     border-color: var(--primary-color);
-    background: #f5f3ff; /* Very light violet tint */
+    background: #f5f3ff;
+    /* Very light violet tint */
     box-shadow: 0 2px 4px rgba(139, 92, 246, 0.1);
 }
 
 /* Change style of the Icon Box */
-.strategy-group input[type="radio"]:checked + .strategy-card .strat-icon {
+.strategy-group input[type="radio"]:checked+.strategy-card .strat-icon {
     background: var(--primary-color);
     color: #ffffff;
 }
 
 /* Change Title Color */
-.strategy-group input[type="radio"]:checked + .strategy-card .strat-title {
+.strategy-group input[type="radio"]:checked+.strategy-card .strat-title {
     color: var(--primary-color);
 }
 
 /* Add a subtle indicator line on the left */
-.strategy-group input[type="radio"]:checked + .strategy-card::before {
+.strategy-group input[type="radio"]:checked+.strategy-card::before {
     content: '';
     position: absolute;
     left: 0;
@@ -295,7 +312,9 @@ input[type="number"]:focus {
     flex-grow: 1;
 }
 
-.primary-btn:hover { background-color: var(--primary-hover); }
+.primary-btn:hover {
+    background-color: var(--primary-hover);
+}
 
 .secondary-btn {
     background-color: var(--secondary-color);
@@ -303,13 +322,18 @@ input[type="number"]:focus {
     width: 100%;
 }
 
-.secondary-btn:hover { background-color: var(--secondary-hover); }
+.secondary-btn:hover {
+    background-color: var(--secondary-hover);
+}
 
 .info-btn {
     background-color: var(--accent-color);
     color: white;
 }
-.info-btn:hover { background-color: #059669; }
+
+.info-btn:hover {
+    background-color: #059669;
+}
 
 /* Complexity/Stats Box */
 .complexity-box {
@@ -349,7 +373,8 @@ input[type="number"]:focus {
 /* --- Main Display Area --- */
 .main-display {
     flex: 1;
-    position: relative; /* Essential for floating elements */
+    position: relative;
+    /* Essential for floating elements */
     background-color: #f1f5f9;
     background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
     background-size: 20px 20px;
@@ -360,8 +385,9 @@ input[type="number"]:focus {
 
 .canvas-container {
     width: 100%;
-    flex: 1; 
-    overflow: auto; /* Allow scrolling if table gets huge */
+    flex: 1;
+    overflow: auto;
+    /* Allow scrolling if table gets huge */
     position: relative;
 }
 
@@ -371,11 +397,11 @@ input[type="number"]:focus {
     min-height: 100%;
     display: flex;
     justify-content: center;
-    cursor: grab; 
+    cursor: grab;
 }
 
 #hash-table-canvas:active {
-    cursor: grabbing; 
+    cursor: grabbing;
 }
 
 .canvas-overlay {
@@ -384,7 +410,7 @@ input[type="number"]:focus {
     right: 15px;
     font-size: 0.75rem;
     color: var(--text-muted);
-    background: rgba(255,255,255,0.8);
+    background: rgba(255, 255, 255, 0.8);
     padding: 2px 6px;
     border-radius: 4px;
     pointer-events: none;
@@ -412,12 +438,12 @@ input[type="number"]:focus {
 
 .console-container.dragging {
     box-shadow: 0 20px 40px -5px rgba(0, 0, 0, 0.5);
-    border-color: rgba(255,255,255,0.2);
+    border-color: rgba(255, 255, 255, 0.2);
     cursor: grabbing;
 }
 
 .console-header {
-    background: rgba(255,255,255,0.05);
+    background: rgba(255, 255, 255, 0.05);
     padding: 10px 15px;
     display: flex;
     justify-content: space-between;
@@ -427,7 +453,9 @@ input[type="number"]:focus {
     user-select: none;
 }
 
-.console-header:active { cursor: grabbing; }
+.console-header:active {
+    cursor: grabbing;
+}
 
 .console-header span {
     color: #e2e8f0;
@@ -446,7 +474,9 @@ input[type="number"]:focus {
     transition: color 0.2s;
 }
 
-.btn-text:hover { color: white; }
+.btn-text:hover {
+    color: white;
+}
 
 .console-body {
     padding: 1rem;
@@ -457,44 +487,56 @@ input[type="number"]:focus {
     flex: 1;
 }
 
-.log-entry { margin-bottom: 0.5rem; line-height: 1.4; }
-.log-entry.system { color: #60a5fa; }
+.log-entry {
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+}
+
+.log-entry.system {
+    color: #60a5fa;
+}
 
 /* --- 4. NEW: Hash Table Specific Visualization Styles --- */
 
 /* Main Bucket Rectangles */
 .bucket-rect {
     fill: #ffffff;
-    stroke: #cbd5e1; /* Light slate stroke */
+    stroke: #cbd5e1;
+    /* Light slate stroke */
     stroke-width: 2px;
     transition: all 0.3s ease;
-    rx: 4px; /* Rounded corners */
+    rx: 4px;
+    /* Rounded corners */
     ry: 4px;
 }
 
 /* When a bucket has a value */
 .bucket-rect.occupied {
-    fill: #f5f3ff; /* Very light violet */
+    fill: #f5f3ff;
+    /* Very light violet */
     stroke: var(--primary-color);
 }
 
 /* Animations/Highlights */
 .bucket-rect.highlight-scan {
-    stroke: var(--warning-color); /* Amber scan */
+    stroke: var(--warning-color);
+    /* Amber scan */
     stroke-width: 3px;
     fill: #fffbeb;
 }
 
 .bucket-rect.highlight-found {
-    stroke: var(--accent-color); /* Green success */
+    stroke: var(--accent-color);
+    /* Green success */
     stroke-width: 3px;
     fill: #ecfdf5;
 }
 
 .bucket-rect.highlight-collision {
-    stroke: var(--danger-color); /* Red collision */
+    stroke: var(--danger-color);
+    /* Red collision */
     fill: #fef2f2;
-    animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+    animation: shake 0.4s cubic-bezier(.36, .07, .19, .97) both;
 }
 
 /* Bucket Text (Value) */
@@ -508,7 +550,8 @@ input[type="number"]:focus {
 }
 
 .bucket-text.placeholder {
-    fill: #cbd5e1; /* Gray text for empty slots */
+    fill: #cbd5e1;
+    /* Gray text for empty slots */
     font-weight: 400;
 }
 
@@ -542,21 +585,50 @@ input[type="number"]:focus {
 
 /* Animations */
 @keyframes shake {
-    10%, 90% { transform: translate3d(-1px, 0, 0); }
-    20%, 80% { transform: translate3d(2px, 0, 0); }
-    30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
-    40%, 60% { transform: translate3d(4px, 0, 0); }
+
+    10%,
+    90% {
+        transform: translate3d(-1px, 0, 0);
+    }
+
+    20%,
+    80% {
+        transform: translate3d(2px, 0, 0);
+    }
+
+    30%,
+    50%,
+    70% {
+        transform: translate3d(-4px, 0, 0);
+    }
+
+    40%,
+    60% {
+        transform: translate3d(4px, 0, 0);
+    }
 }
 
 @keyframes popIn {
-    0% { transform: scale(0); opacity: 0; }
-    80% { transform: scale(1.1); opacity: 1; }
-    100% { transform: scale(1); }
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+
+    80% {
+        transform: scale(1.1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(1);
+    }
 }
 
 .input-group label {
-    display: block;           /* Forces label to own line */
-    margin-bottom: 0.5rem;    /* Adds space between label and input */
+    display: block;
+    /* Forces label to own line */
+    margin-bottom: 0.5rem;
+    /* Adds space between label and input */
     font-size: 0.9rem;
     font-weight: 600;
     color: var(--text-main);
@@ -565,13 +637,16 @@ input[type="number"]:focus {
 /* 2. Update the row layout to stretch items (makes input & button same height) */
 .control-row {
     display: flex;
-    align-items: stretch;     /* CHANGED from flex-end: stretches input to match button height */
+    align-items: stretch;
+    /* CHANGED from flex-end: stretches input to match button height */
     gap: 0.75rem;
     width: 100%;
 }
 
 /* 3. Ensure the input fills available space next to the button */
 .control-row input[type="number"] {
-    flex: 1;                  /* Allows input to grow and fill empty width */
-    width: auto;              /* Overrides the hardcoded 100% width */
+    flex: 1;
+    /* Allows input to grow and fill empty width */
+    width: auto;
+    /* Overrides the hardcoded 100% width */
 }

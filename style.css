@@ -1,38 +1,49 @@
 /* --- 1. DESIGN TOKENS & PALETTE --- */
 :root {
     /* Base Layers (Clean Light Mode) */
-    --bg-app: #f3f4f6;          /* Cool Light Gray */
-    --bg-card: #ffffff;         /* Pure White */
-    --bg-card-hover: #ffffff;   
-    
+    --bg-app: #f3f4f6;
+    /* Cool Light Gray */
+    --bg-card: #ffffff;
+    /* Pure White */
+    --bg-card-hover: #ffffff;
+
     /* Typography */
     --font-ui: 'Inter', system-ui, -apple-system, sans-serif;
     --font-code: 'JetBrains Mono', 'Fira Code', monospace;
-    
-    --text-primary: #0f172a;    /* Slate 900 */
-    --text-secondary: #64748b;  /* Slate 500 */
-    --text-tertiary: #94a3b8;   /* Slate 400 */
+
+    --text-primary: #0f172a;
+    /* Slate 900 */
+    --text-secondary: #64748b;
+    /* Slate 500 */
+    --text-tertiary: #94a3b8;
+    /* Slate 400 */
 
     /* Borders & Shadows (The "Google" feel) */
     --border-subtle: #e2e8f0;
     --border-hover: #cbd5e1;
-    --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
     --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
     --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
-    
+
     /* Brand Colors (Programming Syntax Highlighting Vibe) */
-    --c-hash: #8b5cf6;  /* Violet (Keywords) */
-    --c-graph: #3b82f6; /* Blue (Functions) */
-    --c-avl: #10b981;   /* Emerald (Strings) */
-    --c-heap: #f59e0b;  /* Amber (Integers) */
-    
+    --c-hash: #8b5cf6;
+    /* Violet (Keywords) */
+    --c-graph: #3b82f6;
+    /* Blue (Functions) */
+    --c-avl: #10b981;
+    /* Emerald (Strings) */
+    --c-heap: #f59e0b;
+    /* Amber (Integers) */
+
     /* Animation Curves */
     --ease-elastic: cubic-bezier(0.4, 0, 0.2, 1);
     --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 /* --- 2. GLOBAL RESET & LAYOUT --- */
-* { box-sizing: border-box; }
+* {
+    box-sizing: border-box;
+}
 
 body {
     margin: 0;
@@ -41,20 +52,25 @@ body {
     background-color: var(--bg-app);
     color: var(--text-primary);
     height: 100vh;
-    overflow: hidden; /* Lock scroll */
+    overflow: hidden;
+    /* Lock scroll */
     display: flex;
     justify-content: center;
     align-items: center;
-    -webkit-font-smoothing: antialiased; /* Crisp text */
+    -webkit-font-smoothing: antialiased;
+    /* Crisp text */
 }
 
 /* Background Canvas Layer */
 #networkCanvas {
     position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     z-index: 0;
-    pointer-events: none; /* Mouse passes through */
+    pointer-events: none;
+    /* Mouse passes through */
 }
 
 /* Main Container */
@@ -62,7 +78,8 @@ body {
     position: relative;
     z-index: 10;
     width: 100%;
-    max-width: 1000px; /* Optimal reading width */
+    max-width: 1000px;
+    /* Optimal reading width */
     padding: 2rem;
     display: flex;
     flex-direction: column;
@@ -79,7 +96,8 @@ header {
 h1 {
     font-size: 3rem;
     font-weight: 800;
-    letter-spacing: -0.04em; /* Tight "Product" tracking */
+    letter-spacing: -0.04em;
+    /* Tight "Product" tracking */
     margin: 0 0 12px 0;
     color: var(--text-primary);
     position: relative;
@@ -94,7 +112,8 @@ h1::after {
     left: 0;
     width: 100%;
     height: 12px;
-    background: rgba(59, 130, 246, 0.1); /* Very subtle blue highlight */
+    background: rgba(59, 130, 246, 0.1);
+    /* Very subtle blue highlight */
     z-index: -1;
     transform: rotate(-1deg);
 }
@@ -118,10 +137,12 @@ h1::after {
 /* --- 4. THE GRID --- */
 .grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* 2 Columns */
+    grid-template-columns: repeat(2, 1fr);
+    /* 2 Columns */
     gap: 24px;
     width: 100%;
-    perspective: 1000px; /* For 3D tilt effects if added later */
+    perspective: 1000px;
+    /* For 3D tilt effects if added later */
 }
 
 /* --- 5. CARD DESIGN (The "Hero" Element) --- */
@@ -129,18 +150,20 @@ h1::after {
     position: relative;
     background: var(--bg-card);
     border: 1px solid var(--border-subtle);
-    border-radius: 20px; /* Modern "Squircle" feel */
+    border-radius: 20px;
+    /* Modern "Squircle" feel */
     padding: 24px;
     text-decoration: none;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    overflow: hidden; /* Masking */
-    
+    overflow: hidden;
+    /* Masking */
+
     /* The "Weight" */
     box-shadow: var(--shadow-sm);
     transition: all 0.3s var(--ease-elastic);
-    
+
     /* Layout */
     height: 110px;
 }
@@ -149,17 +172,30 @@ h1::after {
 .card::before {
     content: '';
     position: absolute;
-    left: 0; top: 0; bottom: 0;
+    left: 0;
+    top: 0;
+    bottom: 0;
     width: 4px;
     background: var(--border-subtle);
     transition: width 0.3s ease, background-color 0.3s ease;
 }
 
 /* Specific Border Colors */
-.hash-card::before { background: var(--c-hash); }
-.graph-card::before { background: var(--c-graph); }
-.avl-card::before { background: var(--c-avl); }
-.heap-card::before { background: var(--c-heap); }
+.hash-card::before {
+    background: var(--c-hash);
+}
+
+.graph-card::before {
+    background: var(--c-graph);
+}
+
+.avl-card::before {
+    background: var(--c-avl);
+}
+
+.heap-card::before {
+    background: var(--c-heap);
+}
 
 /* --- CARD CONTENT LAYOUT --- */
 .card-content {
@@ -181,15 +217,26 @@ h1::after {
     font-size: 1.5rem;
     font-weight: 700;
     color: white;
-    
+
     /* Subtle inner shadow for depth */
-    box-shadow: inset 0 2px 4px rgba(255,255,255,0.3), 0 4px 10px rgba(0,0,0,0.1);
+    box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.3), 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.hash-card .icon-wrapper { background: linear-gradient(135deg, var(--c-hash), #a78bfa); }
-.graph-card .icon-wrapper { background: linear-gradient(135deg, var(--c-graph), #60a5fa); }
-.avl-card .icon-wrapper { background: linear-gradient(135deg, var(--c-avl), #34d399); }
-.heap-card .icon-wrapper { background: linear-gradient(135deg, var(--c-heap), #fbbf24); }
+.hash-card .icon-wrapper {
+    background: linear-gradient(135deg, var(--c-hash), #a78bfa);
+}
+
+.graph-card .icon-wrapper {
+    background: linear-gradient(135deg, var(--c-graph), #60a5fa);
+}
+
+.avl-card .icon-wrapper {
+    background: linear-gradient(135deg, var(--c-avl), #34d399);
+}
+
+.heap-card .icon-wrapper {
+    background: linear-gradient(135deg, var(--c-heap), #fbbf24);
+}
 
 /* Text Group */
 .text-group {
@@ -215,7 +262,8 @@ h3 {
     padding: 3px 8px;
     border-radius: 6px;
     margin-top: 6px;
-    align-self: flex-start; /* Don't stretch */
+    align-self: flex-start;
+    /* Don't stretch */
     border: 1px solid transparent;
     transition: all 0.2s;
 }
@@ -252,7 +300,8 @@ h3 {
 .card:hover {
     transform: translateY(-4px) scale(1.01);
     box-shadow: var(--shadow-lg);
-    border-color: transparent; /* Let shadow define depth */
+    border-color: transparent;
+    /* Let shadow define depth */
     background: var(--bg-card-hover);
 }
 
@@ -268,10 +317,21 @@ h3 {
 }
 
 /* Color the arrow based on the card type on hover */
-.hash-card:hover .arrow { color: var(--c-hash); }
-.graph-card:hover .arrow { color: var(--c-graph); }
-.avl-card:hover .arrow { color: var(--c-avl); }
-.heap-card:hover .arrow { color: var(--c-heap); }
+.hash-card:hover .arrow {
+    color: var(--c-hash);
+}
+
+.graph-card:hover .arrow {
+    color: var(--c-graph);
+}
+
+.avl-card:hover .arrow {
+    color: var(--c-avl);
+}
+
+.heap-card:hover .arrow {
+    color: var(--c-heap);
+}
 
 /* Make the tag look active */
 .card:hover .tag {
@@ -304,13 +364,13 @@ footer {
     box-shadow: var(--shadow-md);
 }
 
-.made-by { 
+.made-by {
     color: var(--text-secondary);
     font-family: var(--font-ui);
 }
 
-.creator-name { 
-    font-weight: 700; 
+.creator-name {
+    font-weight: 700;
     color: var(--text-primary);
     font-family: var(--font-ui);
     background: linear-gradient(to right, var(--c-graph), var(--c-hash));
@@ -320,13 +380,32 @@ footer {
 
 /* --- 7. RESPONSIVENESS & ANIMATION --- */
 @media (max-width: 768px) {
-    .grid { grid-template-columns: 1fr; }
-    h1 { font-size: 2.25rem; }
-    .app-container { padding: 1.5rem; }
-    .card { height: auto; padding: 20px; }
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    h1 {
+        font-size: 2.25rem;
+    }
+
+    .app-container {
+        padding: 1.5rem;
+    }
+
+    .card {
+        height: auto;
+        padding: 20px;
+    }
 }
 
 @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
