@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hash Table Visualizer | C++ WASM</title>
+
+    <!-- Link to the shared styling -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Top Navigation / Header -->
+    <header class="app-header">
+        <div class="header-content">
+            <div class="brand">
+                <div class="logo-icon" style="background: linear-gradient(135deg, #8b5cf6, #ec4899);"></div>
+                <h1>Hash Table Visualizer</h1>
+            </div>
+            <span class="badge">C++ Powered</span>
+        </div>
+        <div class="status-indicator" id="systemStatus">
+            <span class="status-dot"></span> System: Loading...
+        </div>
+    </header>
+
+    <!-- Main Workspace Layout -->
+    <div class="workspace">
+
+        <!-- LEFT SIDEBAR: Controls & Inputs -->
+        <aside class="sidebar">
+
+            <!-- Section 1: Collision Resolution Strategy -->
+            <!-- Section 1: Collision Strategy -->
+            <section class="panel-section">
+                <div class="section-header">
+                    <h2>1. Collision Strategy</h2>
+                </div>
+
+                <div class="strategy-group">
+
+                    <!-- Linear Probing -->
+                    <input type="radio" name="probeType" id="strat-linear" value="1" checked
+                        onchange="updateProbeMode(1)">
+                    <label class="strategy-card" for="strat-linear">
+                        <div class="strat-icon">i+1</div>
+                        <div class="strat-content">
+                            <span class="strat-title">Linear Probing</span>
+                            <span class="strat-desc">Next available slot</span>
+                        </div>
+                    </label>
+
+                    <!-- Quadratic Probing -->
+                    <input type="radio" name="probeType" id="strat-quad" value="2" onchange="updateProbeMode(2)">
+                    <label class="strategy-card" for="strat-quad">
+                        <div class="strat-icon">i²</div>
+                        <div class="strat-content">
+                            <span class="strat-title">Quadratic Probing</span>
+                            <span class="strat-desc">Exponential jumps</span>
+                        </div>
+                    </label>
+
+                    <!-- Separate Chaining -->
+                    <input type="radio" name="probeType" id="strat-chain" value="3" onchange="updateProbeMode(3)">
+                    <label class="strategy-card" for="strat-chain">
+                        <div class="strat-icon">o-o</div>
+                        <div class="strat-content">
+                            <span class="strat-title">Separate Chaining</span>
+                            <span class="strat-desc">Linked List bucket</span>
+                        </div>
+                    </label>
+
+                </div>
+            </section>
+
+            <!-- Section 2: Operations -->
+
+            <!-- Add this INSIDE the <aside class="sidebar">, preferably before the Clear button -->
+
+            <section class="panel-section">
+                <div class="section-header">
+                    <h2>3. Configuration</h2>
+                </div>
+
+                <div class="input-group">
+                    <label>Table Capacity (Size)</label>
+                    <div class="control-row">
+                        <input type="number" id="tableCapacity" value="12" min="5" max="30">
+                        <button id="resizeBtn" class="btn secondary-btn">Resize</button>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="panel-section">
+                <div class="section-header">
+                    <h2>2. Operations</h2>
+                </div>
+
+                <div class="input-group">
+                    <label>Value (Integer)</label>
+                    <div class="control-row">
+                        <input type="number" id="nodeValue" placeholder="e.g. 42">
+                    </div>
+                </div>
+
+                <div class="control-row" style="margin-top: 10px;">
+                    <button id="insertBtn" class="btn primary-btn">Insert</button>
+                    <button id="searchBtn" class="btn info-btn">Search</button>
+                </div>
+
+                <button id="generateRandomBtn" class="btn secondary-btn" style="width: 100%; margin-top: 0.5rem;">Insert
+                    Random</button>
+            </section>
+
+            <!-- Section 3: Statistics -->
+            <section class="panel-section complexity-box">
+                <h3>Table Stats</h3>
+                <div id="complexityDisplay">
+                    <div class="algo-name">Load Factor: <span class="big-o" id="loadFactor">0.00</span></div>
+                    <div class="algo-name" style="margin-top:5px; font-size: 0.8em; color:#666;">Capacity: <span
+                            id="capacityDisplay">12</span></div>
+                </div>
+            </section>
+
+            <!-- Clear -->
+            <section class="panel-section" style="border:none;">
+                <button id="clearBtn" class="btn secondary-btn" style="background-color: #374151;">Reset Table</button>
+            </section>
+        </aside>
+
+        <!-- RIGHT AREA: Visualization & Logs -->
+        <main class="main-display" id="visualizerArea">
+
+            <!-- Canvas Wrapper -->
+            <div class="canvas-container" style="align-items: flex-start; padding-top: 40px; overflow-y: auto;">
+                <!-- D3 will inject SVG here -->
+                <div id="hash-table-canvas" style="width:100%; min-height:100%; display:flex; justify-content:center;">
+                </div>
+                <div class="canvas-overlay">D3.js Visualization Layer</div>
+            </div>
+
+            <!-- Panel: Execution Log (Bottom Right) -->
+            <div class="console-container" id="floatingConsole">
+                <div class="console-header" id="dragHandle">
+                    <span>Collision Log</span>
+                    <button id="btnClearConsole" class="btn-text" title="Clear Log">Clear</button>
+                </div>
+                <div id="outputConsole" class="console-body">
+                    <div class="log-entry system">> Initializing Hash Table (Size 12)...</div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- SCRIPTS CONFIGURATION -->
+    <script>
+        // Module configuration for Emscripten
+        var Module = {
+            onRuntimeInitialized: function () {
+                // Signals that C++ is ready
+                if (typeof onWasmReady === 'function') {
+                    onWasmReady();
+                }
+            }
+        };
+
+        // UI Helper to switch modes
+        function updateProbeMode(mode) {
+            window.currentProbeMode = parseInt(mode);
+            console.log("Probe Mode Switched to: " + mode);
+            // Trigger a reset or visual update if necessary
+            if (typeof resetTable === 'function') resetTable();
+        }
+    </script>
+
+    <!-- D3.js -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+
+    <!-- WASM Glue Code (from compiled C++) -->
+    <!-- Assuming output filename is hashtable.js -->
+    <script src="hashtable.js"></script>
+
+    <!-- Frontend Logic -->
+    <script src="script.js"></script>
+</body>
+
+</html>
