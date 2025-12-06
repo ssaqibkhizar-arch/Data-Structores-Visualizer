@@ -2,13 +2,69 @@
     "version": "2.0.0",
     "tasks": [
         {
+            "label": "Build Hash Table",
+            "type": "shell",
+            "command": "C:/Users/ssaqi/emsdk/upstream/emscripten/emcc.bat",
+            "args": [
+                "main.cpp",
+                "-o", "hashtable.js",
+                "-s", "EXPORTED_RUNTIME_METHODS=[\"ccall\",\"cwrap\"]",
+                "-s", "EXPORTED_FUNCTIONS=[\"_initHashTable\",\"_insertValue\",\"_searchValue\",\"_getTableJSON\",\"_resetTable\",\"_main\"]",
+                "-s", "WASM=1",
+                "-s", "ALLOW_MEMORY_GROWTH=1",
+                "-s", "NO_EXIT_RUNTIME=1"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/Hash"
+            },
+            "group": "build",
+            "problemMatcher": "$gcc"
+        },
+        {
+            "label": "Build Graph (WASM)",
+            "type": "shell",
+            "command": "C:/Users/ssaqi/emsdk/upstream/emscripten/emcc.bat",
+            "args": [
+                "main.cpp",
+                "-o", "main.js",
+                "-s", "EXPORTED_RUNTIME_METHODS=[\"ccall\",\"cwrap\",\"getValue\",\"setValue\",\"HEAP32\"]",
+                "-s", "EXPORTED_FUNCTIONS=[\"_initGraph\",\"_addEdge\",\"_getResultBuffer\",\"_runBFS\",\"_runDFS\",\"_runPrims\",\"_runDijkstra\",\"_main\"]",
+                "-s", "WASM=1",
+                "-s", "ALLOW_MEMORY_GROWTH=1",
+                "-s", "NO_EXIT_RUNTIME=1"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/Graph"
+            },
+            "group": "build",
+            "problemMatcher": "$gcc"
+        },
+        {
+            "label": "Build AVL Tree",
+            "type": "shell",
+            "command": "C:/Users/ssaqi/emsdk/upstream/emscripten/emcc.bat",
+            "args": [
+                "main.cpp",
+                "-o", "main.js",
+                "-s", "EXPORTED_RUNTIME_METHODS=[\"ccall\",\"cwrap\"]",
+                "-s", "EXPORTED_FUNCTIONS=[\"_initTree\",\"_insertNode\",\"_deleteNode\",\"_searchNode\",\"_getTreeJSON\",\"_getTraversal\",\"_main\"]",
+                "-s", "WASM=1",
+                "-s", "ALLOW_MEMORY_GROWTH=1",
+                "-s", "NO_EXIT_RUNTIME=1"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/AVL Tree"
+            },
+            "group": "build",
+            "problemMatcher": "$gcc"
+        },
+        {
             "label": "Build Binary Heap",
             "type": "shell",
             "command": "C:/Users/ssaqi/emsdk/upstream/emscripten/emcc.bat",
             "args": [
                 "main.cpp",
-                "-o",
-                "main.js",
+                "-o", "main.js",
                 "-s", "EXPORTED_RUNTIME_METHODS=[\"ccall\",\"cwrap\"]",
                 "-s", "EXPORTED_FUNCTIONS=[\"_initHeap\",\"_toggleMode\",\"_insertNode\",\"_deleteNode\",\"_getHeapJSON\",\"_getArrayData\",\"_main\"]",
                 "-s", "WASM=1",
@@ -18,11 +74,21 @@
             "options": {
                 "cwd": "${workspaceFolder}/Binary Heap"
             },
+            "group": "build",
+            "problemMatcher": "$gcc"
+        },
+        {
+            "label": "Build All Projects",
+            "dependsOn": [
+                "Build Hash Table",
+                "Build Graph (WASM)",
+                "Build AVL Tree",
+                "Build Binary Heap"
+            ],
             "group": {
                 "kind": "build",
                 "isDefault": true
-            },
-            "problemMatcher": "$gcc"
+            }
         }
     ]
 }
