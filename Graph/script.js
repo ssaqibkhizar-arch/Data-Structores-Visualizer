@@ -28,35 +28,35 @@ let isGraphReady = false;
 // It is already defined in index.html. We just use the global one.
 
 // --- Initialization ---
-window.onload = function () {
+window.onload = function() {
     canvas = document.getElementById('graphCanvas');
     ctx = canvas.getContext('2d');
 
-    if (document.getElementById('btnInitGraph')) document.getElementById('btnInitGraph').onclick = initGraph;
-    if (document.getElementById('btnAddEdge')) document.getElementById('btnAddEdge').onclick = addEdge;
-    if (document.getElementById('btnShowAdjList')) document.getElementById('btnShowAdjList').onclick = renderAdjList;
-    if (document.getElementById('btnShowAdjMatrix')) document.getElementById('btnShowAdjMatrix').onclick = renderAdjMatrix;
+    if(document.getElementById('btnInitGraph')) document.getElementById('btnInitGraph').onclick = initGraph;
+    if(document.getElementById('btnAddEdge')) document.getElementById('btnAddEdge').onclick = addEdge;
+    if(document.getElementById('btnShowAdjList')) document.getElementById('btnShowAdjList').onclick = renderAdjList;
+    if(document.getElementById('btnShowAdjMatrix')) document.getElementById('btnShowAdjMatrix').onclick = renderAdjMatrix;
     // UI Event Listeners
-    if (document.getElementById('btnInitGraph')) document.getElementById('btnInitGraph').onclick = initGraph;
-    if (document.getElementById('btnAddEdge')) document.getElementById('btnAddEdge').onclick = addEdge;
+    if(document.getElementById('btnInitGraph')) document.getElementById('btnInitGraph').onclick = initGraph;
+    if(document.getElementById('btnAddEdge')) document.getElementById('btnAddEdge').onclick = addEdge;
     // NEW: Listeners for Output Panel
-    if (document.getElementById('btnShowAdjList')) document.getElementById('btnShowAdjList').onclick = renderAdjList;
-    if (document.getElementById('btnShowAdjMatrix')) document.getElementById('btnShowAdjMatrix').onclick = renderAdjMatrix;
-    if (document.getElementById('btnClearOutput')) document.getElementById('btnClearOutput').onclick = () => {
+    if(document.getElementById('btnShowAdjList')) document.getElementById('btnShowAdjList').onclick = renderAdjList;
+    if(document.getElementById('btnShowAdjMatrix')) document.getElementById('btnShowAdjMatrix').onclick = renderAdjMatrix;
+    if(document.getElementById('btnClearOutput')) document.getElementById('btnClearOutput').onclick = () => {
         document.getElementById('outputBody').innerHTML = '<div class="log-entry system">Cleared.</div>';
     };
 
-    // Update Draggable Logic to handle both panels
-    makeDraggable(document.getElementById('floatingConsole'), document.getElementById('dragHandle'));
-    makeDraggable(document.getElementById('outputPanel'), document.getElementById('outputDragHandle'));
+// Update Draggable Logic to handle both panels
+makeDraggable(document.getElementById('floatingConsole'), document.getElementById('dragHandle'));
+makeDraggable(document.getElementById('outputPanel'), document.getElementById('outputDragHandle'));
+    
 
-
-    setupCanvasInteractions();
+setupCanvasInteractions();
 
     // Weight Toggle Logic
     const toggle = document.getElementById('toggleWeight');
     const weightInput = document.getElementById('weightInputGroup');
-
+    
     if (toggle) {
         toggle.addEventListener('change', (e) => {
             isWeighted = e.target.checked;
@@ -79,7 +79,7 @@ window.onload = function () {
 
     // Initial Message
     drawPlaceholder();
-
+    
     // Check if Module is already ready (in case it loaded fast)
     if (typeof Module !== 'undefined' && Module.runtimeInitialized) {
         onReady();
@@ -99,15 +99,15 @@ function onReady() {
 
 function initGraph() {
     const vCount = parseInt(document.getElementById('vertexCount').value);
-
+    
     // 1. Call C++ Backend
     try {
         if (typeof Module === 'undefined' || typeof Module.ccall === 'undefined') {
             throw new Error("WASM not loaded");
         }
-
+        
         Module.ccall('initGraph', null, ['number'], [vCount]);
-
+        
         // 2. Setup Visual Nodes (Circular Layout)
         nodes = [];
         const centerX = canvas.width / 2;
@@ -211,7 +211,7 @@ function runAlgorithm(type) {
             showDSPanel("QUEUE");
             const snapshots = getBFSSnapshots(startNode);
             animateSnapshots(snapshots, 'bfs');
-        }
+        } 
         else if (type === 'dfs') {
             // A. Run C++ Logic
             Module.ccall('runDFS', null, ['number'], [startNode]);
@@ -240,7 +240,7 @@ function runAlgorithm(type) {
             hideDSPanel();
             Module.ccall('runDijkstra', null, ['number'], [startNode]);
             updateComplexity("Dijkstra", "O(E + V log V)");
-
+            
             const distArray = readBuffer(bufferPtr, vCount);
             logConsole(">> Shortest Paths Calculated.");
             displayDijkstraTable(distArray);
@@ -254,41 +254,44 @@ function runAlgorithm(type) {
 
 function animateSnapshots(snapshots, algoType) {
     let step = 0;
-
-    // Create a dedicated interval/timeout loop
+    
     function nextFrame() {
         if (step >= snapshots.length) {
             logConsole(">> Algorithm Complete.");
-            // Delay hiding the panel slightly so user can see final state
-            setTimeout(hideDSPanel, 2000);
+            setTimeout(hideDSPanel, 2000); 
             return;
         }
 
         const state = snapshots[step];
-
-        // 1. Update Graph Nodes Visuals
+        
+        // --- VISUAL STATE LOGIC ---
         if (state.node !== null && state.node !== undefined) {
-            // Mark current as processing
-            nodes[state.node].state = 'processing';
-
-            // If it's a "Finished" step in BFS, mark visited
-            if (algoType === 'bfs' && state.text.includes("Finished")) {
-                nodes[state.node].state = 'visited';
+            
+            // 1. Check for "Finished" status (Applies to both BFS and DFS now)
+            if (state.text.includes("Finished")) {
+                nodes[state.node].state = 'visited'; // Green
+            } 
+            // 2. Check for "Popped" or generic processing
+            else if (state.text.includes("Popped") || state.text.includes("Visiting")) {
+                nodes[state.node].state = 'processing'; // Yellow
             }
-            // For DFS, nodes become visited when popped
-            if (algoType === 'dfs' && state.text.includes("Popped")) {
-                nodes[state.node].state = 'visited';
+            // 3. For any other step (like "Pushed" or "Queued"), keep the node Yellow
+            else {
+                // Ensure the current node stays yellow while we are working on its neighbors
+                if (nodes[state.node].state !== 'visited') {
+                    nodes[state.node].state = 'processing';
+                }
             }
         }
 
-        // 2. Update Bottom Panel (The Stack/Queue)
+        // Update Bottom Panel (Stack/Queue)
         updateDSView(state.struct, state.node);
 
-        // 3. Draw Canvas
+        // Draw Canvas
         drawGraph();
 
         step++;
-        setTimeout(nextFrame, CONFIG.animDelay);
+        setTimeout(nextFrame, CONFIG.animDelay); 
     }
 
     nextFrame();
@@ -308,9 +311,9 @@ function animateTraversal(visitOrder) {
         const nodeId = visitOrder[step];
         // Skip garbage values if buffer wasn't fully filled
         if (nodeId < 0 || nodeId >= nodes.length) {
-            step++;
-            nextFrame();
-            return;
+             step++;
+             nextFrame();
+             return;
         }
 
         const node = nodes[nodeId];
@@ -342,7 +345,7 @@ function animateTraversal(visitOrder) {
 
 function animateMST(parentArray) {
     let edgesToAnimate = [];
-
+    
     parentArray.forEach((parent, child) => {
         // Filter valid parents
         if (parent !== -1 && parent !== 2147483647 && parent >= 0 && parent < nodes.length) {
@@ -351,7 +354,7 @@ function animateMST(parentArray) {
     });
 
     let step = 0;
-    let activeMSTEdges = [];
+    let activeMSTEdges = []; 
 
     function nextFrame() {
         if (step >= edgesToAnimate.length) {
@@ -373,7 +376,7 @@ function animateMST(parentArray) {
         step++;
         setTimeout(nextFrame, CONFIG.animDelay);
     }
-
+    
     nextFrame();
 }
 
@@ -384,11 +387,11 @@ function displayDijkstraTable(distArray) {
     distArray.forEach((d, i) => {
         const val = (d > 1000000) ? "∞" : d;
         html += `<tr><td>${i}</td><td>${val}</td></tr>`;
-
+        
         // Keep the visual node coloring logic
-        if (val !== "∞") nodes[i].state = 'visited';
+        if(val !== "∞") nodes[i].state = 'visited';
     });
-
+    
     html += '</tbody></table>';
     updateOutputPanel(html); // Send to new panel
     drawGraph();
@@ -404,12 +407,12 @@ function drawGraph(highlightEdges = []) {
     nodes.forEach(node => {
         node.edges.forEach(edge => {
             const target = nodes[edge.to];
-
+            
             let strokeColor = CONFIG.colors.edge;
             let lineWidth = 2;
 
-            const isHighlighted = highlightEdges.some(h =>
-                (h.u === node.id && h.v === edge.to) ||
+            const isHighlighted = highlightEdges.some(h => 
+                (h.u === node.id && h.v === edge.to) || 
                 (h.u === edge.to && h.v === node.id)
             );
 
@@ -429,10 +432,10 @@ function drawGraph(highlightEdges = []) {
             if (isWeighted) {
                 const midX = (node.x + target.x) / 2;
                 const midY = (node.y + target.y) / 2;
-
+                
                 ctx.fillStyle = "white";
                 ctx.beginPath();
-                ctx.arc(midX, midY, 10, 0, 2 * Math.PI);
+                ctx.arc(midX, midY, 10, 0, 2*Math.PI);
                 ctx.fill();
 
                 ctx.fillStyle = "#666";
@@ -448,7 +451,7 @@ function drawGraph(highlightEdges = []) {
     nodes.forEach(node => {
         ctx.beginPath();
         ctx.arc(node.x, node.y, CONFIG.radius, 0, 2 * Math.PI);
-
+        
         if (node.state === 'processing') {
             ctx.fillStyle = CONFIG.colors.processing;
         } else if (node.state === 'visited') {
@@ -456,7 +459,7 @@ function drawGraph(highlightEdges = []) {
         } else {
             ctx.fillStyle = CONFIG.colors.default;
         }
-
+        
         ctx.fill();
         ctx.strokeStyle = "white";
         ctx.lineWidth = 2;
@@ -474,14 +477,14 @@ function drawPlaceholder() {
     ctx.font = "16px sans-serif";
     ctx.fillStyle = "#9ca3af";
     ctx.textAlign = "center";
-    ctx.fillText("Initialize Graph to Begin", canvas.width / 2, canvas.height / 2);
+    ctx.fillText("Initialize Graph to Begin", canvas.width/2, canvas.height/2);
 }
 
 // --- Helpers ---
 
 function readBuffer(ptr, length) {
     const data = [];
-    const offset = ptr / 4;
+    const offset = ptr / 4; 
     for (let i = 0; i < length; i++) {
         data.push(Module.HEAP32[offset + i]);
     }
@@ -507,17 +510,17 @@ function logConsole(msg) {
 // Helper: Simple BFS in JS to check if all nodes are reachable
 function isGraphConnected(startNode) {
     if (nodes.length === 0) return false;
-
+    
     let visitedCount = 0;
     let visited = new Array(nodes.length).fill(false);
     let queue = [startNode];
-
+    
     visited[startNode] = true;
     visitedCount++;
-
+    
     while (queue.length > 0) {
         let u = queue.shift();
-
+        
         // Look at visual edges
         nodes[u].edges.forEach(edge => {
             if (!visited[edge.to]) {
@@ -527,7 +530,7 @@ function isGraphConnected(startNode) {
             }
         });
     }
-
+    
     // If we visited equal nodes to total nodes, it is connected
     return visitedCount === nodes.length;
 }
@@ -561,7 +564,7 @@ function makeDraggable(element, handle) {
         element.style.bottom = 'auto';
         element.style.right = 'auto';
         element.style.width = `${rect.width}px`;
-
+        
         // Calculate initial left/top relative to parent
         element.style.left = `${rect.left - parentRect.left}px`;
         element.style.top = `${rect.top - parentRect.top}px`;
@@ -604,7 +607,7 @@ function getBFSSnapshots(startNode) {
     while (queue.length > 0) {
         // Peek/Dequeue
         let u = queue.shift();
-
+        
         // Snapshot: Processing Node u
         snapshots.push({ node: u, struct: [u, ...queue], text: `Visiting ${u}` });
 
@@ -628,7 +631,7 @@ function getDFSSnapshots(startNode) {
     let stack = [startNode];
     let visited = new Array(nodes.length).fill(false);
 
-    // Initial
+    // Initial Snapshot
     snapshots.push({ node: null, struct: [...stack], text: "Start" });
 
     while (stack.length > 0) {
@@ -636,22 +639,27 @@ function getDFSSnapshots(startNode) {
 
         if (!visited[u]) {
             visited[u] = true;
-
-            // Snapshot: Pop & Visit
+            
+            // 1. POP = Processing (Yellow)
             snapshots.push({ node: u, struct: [...stack, u], text: `Popped ${u}` });
 
-            // Collect neighbors to push
-            // Note: Push in reverse order to visit smallest ID first (standard convention)
-            // or normal order depending on graph definition.
-            const neighbors = nodes[u].edges.filter(e => !visited[e.to]).map(e => e.to);
-
-            // Optional: Sort or reverse neighbors here for specific DFS order
+            // Sort and Reverse neighbors (to ensure numerical order 1->2->3)
+            let neighbors = nodes[u].edges
+                .filter(e => !visited[e.to])
+                .map(e => e.to);
+            
+            neighbors.sort((a, b) => a - b);
+            neighbors.reverse();
 
             neighbors.forEach(v => {
                 stack.push(v);
-                // Snapshot: Push Neighbor
+                // Push Neighbor action
                 snapshots.push({ node: u, struct: [...stack], text: `Pushed ${v}` });
             });
+
+            // 2. NEW STEP: Finished = Visited (Green)
+            // We add this snapshot to tell the renderer we are done with Node U
+            snapshots.push({ node: u, struct: [...stack], text: `Finished ${u}` });
         }
     }
     return snapshots;
@@ -668,12 +676,12 @@ function updateOutputPanel(htmlContent) {
 
 function renderAdjList() {
     if (!isGraphReady) { alert("Initialize graph first."); return; }
-
+    
     let html = '<div class="log-entry system">>> Adjacency List:</div>';
-
+    
     nodes.forEach(node => {
         let line = `<div class="adj-list-item"><strong>Node ${node.id}</strong>`;
-
+        
         if (node.edges.length === 0) {
             line += ` <span style="opacity:0.5">-> null</span>`;
         } else {
@@ -726,10 +734,10 @@ function showDSPanel(type) {
     const panel = document.getElementById('ds-visualizer');
     const label = document.getElementById('ds-type-label');
     const hint = document.querySelector('.ds-hint');
-
+    
     label.innerText = type; // "STACK" or "QUEUE"
     hint.innerText = (type === 'STACK') ? "(Top Right)" : "(Front ← → Rear)";
-
+    
     panel.classList.add('active');
 }
 
@@ -746,12 +754,12 @@ function updateDSView(dataArray, activeNode) {
         const block = document.createElement('div');
         block.className = 'ds-block';
         block.innerText = val;
-
+        
         // Highlight the node currently being processed
         if (val === activeNode) {
             block.classList.add('highlight');
         }
-
+        
         container.appendChild(block);
     });
 }
@@ -793,7 +801,7 @@ function setupCanvasInteractions() {
             // Update node coordinates
             nodes[draggedNodeId].x = mouseX;
             nodes[draggedNodeId].y = mouseY;
-
+            
             // Re-render immediately
             drawGraph();
         } else {

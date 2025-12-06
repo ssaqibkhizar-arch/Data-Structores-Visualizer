@@ -1,15 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Graph Algorithms Visualizer | C++ WASM</title>
-
+    
     <!-- Link to our styling -->
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
     <!-- Top Navigation / Header -->
@@ -28,17 +26,17 @@
 
     <!-- Main Workspace Layout -->
     <div class="workspace">
-
+        
         <!-- LEFT SIDEBAR: Controls & Inputs -->
         <aside class="sidebar">
-
+            
             <!-- Section 1: Initialization -->
             <section class="panel-section">
                 <div class="section-header">
                     <h2>1. Graph Setup</h2>
                 </div>
                 <p class="helper-text">Define the number of vertices (2-20) to initialize the canvas.</p>
-
+                
                 <div class="control-row">
                     <div class="input-group">
                         <label for="vertexCount">Vertices</label>
@@ -77,9 +75,8 @@
                 </div>
                 <button id="btnAddEdge" class="btn secondary-btn">Add Edge</button>
                 <div class="control-row" style="margin-top: 1rem;">
-                    <button id="btnShowAdjList" class="btn secondary-btn" style="font-size: 0.8rem;">Adj List</button>
-                    <button id="btnShowAdjMatrix" class="btn secondary-btn" style="font-size: 0.8rem;">Adj
-                        Matrix</button>
+                <button id="btnShowAdjList" class="btn secondary-btn" style="font-size: 0.8rem;">Adj List</button>
+                <button id="btnShowAdjMatrix" class="btn secondary-btn" style="font-size: 0.8rem;">Adj Matrix</button>
                 </div>
             </section>
 
@@ -88,7 +85,7 @@
                 <div class="section-header">
                     <h2>3. Algorithms</h2>
                 </div>
-
+                
                 <div class="input-group full-width">
                     <label for="startNode">Start Node</label>
                     <input type="number" id="startNode" value="0" placeholder="0">
@@ -114,8 +111,8 @@
 
         <!-- RIGHT AREA: Visualization & Logs -->
         <main class="main-display" id="visualizerArea">
-
-
+            
+            
             <!-- Canvas Wrapper (Increased Size) -->
             <div class="canvas-container">
                 <canvas id="graphCanvas" width="1200" height="800"></canvas>
@@ -131,36 +128,36 @@
                 <div id="outputConsole" class="console-body">
                     <div class="log-entry system">> Initializing WebAssembly Environment...</div>
                 </div>
-            </div>
-            <div class="console-container" id="outputPanel" style="top: 20px; right: 20px; bottom: auto;">
-                <div class="console-header" id="outputDragHandle">
-                    <span>Structure & Results</span>
-                    <button id="btnClearOutput" class="btn-text" title="Clear">Clear</button>
                 </div>
-                <div id="outputBody" class="console-body">
-                    <div class="log-entry system">Waiting for input...</div>
+                    <div class="console-container" id="outputPanel" style="top: 20px; right: 20px; bottom: auto;">
+                        <div class="console-header" id="outputDragHandle">
+                        <span>Structure & Results</span>
+                        <button id="btnClearOutput" class="btn-text" title="Clear">Clear</button>
+                    </div>
+                        <div id="outputBody" class="console-body">
+                        <div class="log-entry system">Waiting for input...</div>
                 </div>
-            </div>
-
+        </div>
+            
 
         </main>
 
 
     </div>
 
-    <div id="ds-visualizer" class="ds-panel">
+        <div id="ds-visualizer" class="ds-panel">
         <div class="ds-header">
             <span id="ds-type-label">QUEUE</span>
             <span class="ds-hint">(Front &larr; &rarr; Rear)</span>
         </div>
         <div class="ds-content" id="ds-content-area">
-        </div>
+            </div>
     </div>
-
+        
     <!-- SCRIPTS CONFIGURATION -->
     <script>
         var Module = {
-            onRuntimeInitialized: function () {
+            onRuntimeInitialized: function() {
                 // Call the function in script.js to update the UI
                 if (typeof onReady === 'function') {
                     onReady();
@@ -171,5 +168,4 @@
     <script src="main.js"></script>
     <script src="script.js"></script>
 </body>
-
 </html>
