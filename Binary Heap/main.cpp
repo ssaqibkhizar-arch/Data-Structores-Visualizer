@@ -18,7 +18,8 @@ class Heap
     int size;
 
     // Helper to swap nodes
-    void swap(int& a, int& b) {
+    void swap(int& a, int& b)
+    {
         int temp = a;
         a = b;
         b = temp;
@@ -153,7 +154,8 @@ public:
     }
 
     // Returns the Tree Structure JSON for D3
-    string getTreeJSON() {
+    string getTreeJSON()
+    {
         if (size == 0) return "null";
         stringstream ss;
         nodeToJSON(1, ss);
@@ -161,7 +163,8 @@ public:
     }
 
     // Returns the flat Array JSON for the Array View
-    string getArrayJSON() {
+    string getArrayJSON()
+    {
         stringstream ss;
         ss << "[";
         for(int i = 1; i <= size; i++) {
@@ -173,7 +176,8 @@ public:
     }
     
     // Convert current heap to Min or Max (Heapify All)
-    void rebuild(bool isMin) {
+    void rebuild(bool isMin)
+    {
         // Floyd's building algorithm: start from last parent down to root
         for (int i = size / 2; i >= 1; i--) {
             if (isMin) percolateDownMin(i);
@@ -190,9 +194,11 @@ Heap* heap = nullptr;
 string buffer;
 bool isMinMode = true; // Toggle state
 
-extern "C" {
+extern "C" 
+{
     EMSCRIPTEN_KEEPALIVE
-    void initHeap() {
+    void initHeap() 
+    {
         if (heap) delete heap;
         // Initialize with capacity 100
         heap = new Heap(100); 
@@ -200,13 +206,15 @@ extern "C" {
     }
 
     EMSCRIPTEN_KEEPALIVE
-    void toggleMode(int isMin) {
+    void toggleMode(int isMin) 
+    {
         isMinMode = (isMin == 1);
         if (heap) heap->rebuild(isMinMode);
     }
 
     EMSCRIPTEN_KEEPALIVE
-    const char* insertNode(int val) {
+    const char* insertNode(int val) 
+    {
         if (!heap) initHeap();
         
         if (isMinMode) heap->insertMin(val);
@@ -217,7 +225,8 @@ extern "C" {
     }
 
     EMSCRIPTEN_KEEPALIVE
-    const char* deleteNode(int val) {
+    const char* deleteNode(int val) 
+    {
         // Note: Heaps usually only extract root (Min/Max). 
         // We will treat "deleteNode" as "Extract Root" regardless of the 'val' passed.
         if (!heap) return "null";
@@ -230,7 +239,8 @@ extern "C" {
     }
 
     EMSCRIPTEN_KEEPALIVE
-    const char* getHeapJSON() {
+    const char* getHeapJSON() 
+    {
         if (!heap) return "null";
         buffer = heap->getTreeJSON();
         return buffer.c_str();
@@ -238,7 +248,8 @@ extern "C" {
     
     // New: Get the flat array for visualization
     EMSCRIPTEN_KEEPALIVE
-    const char* getArrayData() {
+    const char* getArrayData()
+    {
         if (!heap) return "[]";
         buffer = heap->getArrayJSON();
         return buffer.c_str();
