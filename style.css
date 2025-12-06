@@ -1,0 +1,332 @@
+/* --- 1. DESIGN TOKENS & PALETTE --- */
+:root {
+    /* Base Layers (Clean Light Mode) */
+    --bg-app: #f3f4f6;          /* Cool Light Gray */
+    --bg-card: #ffffff;         /* Pure White */
+    --bg-card-hover: #ffffff;   
+    
+    /* Typography */
+    --font-ui: 'Inter', system-ui, -apple-system, sans-serif;
+    --font-code: 'JetBrains Mono', 'Fira Code', monospace;
+    
+    --text-primary: #0f172a;    /* Slate 900 */
+    --text-secondary: #64748b;  /* Slate 500 */
+    --text-tertiary: #94a3b8;   /* Slate 400 */
+
+    /* Borders & Shadows (The "Google" feel) */
+    --border-subtle: #e2e8f0;
+    --border-hover: #cbd5e1;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+    
+    /* Brand Colors (Programming Syntax Highlighting Vibe) */
+    --c-hash: #8b5cf6;  /* Violet (Keywords) */
+    --c-graph: #3b82f6; /* Blue (Functions) */
+    --c-avl: #10b981;   /* Emerald (Strings) */
+    --c-heap: #f59e0b;  /* Amber (Integers) */
+    
+    /* Animation Curves */
+    --ease-elastic: cubic-bezier(0.4, 0, 0.2, 1);
+    --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* --- 2. GLOBAL RESET & LAYOUT --- */
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-ui);
+    background-color: var(--bg-app);
+    color: var(--text-primary);
+    height: 100vh;
+    overflow: hidden; /* Lock scroll */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    -webkit-font-smoothing: antialiased; /* Crisp text */
+}
+
+/* Background Canvas Layer */
+#networkCanvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+    pointer-events: none; /* Mouse passes through */
+}
+
+/* Main Container */
+.app-container {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    max-width: 1000px; /* Optimal reading width */
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: fadeUp 0.8s var(--ease-elastic);
+}
+
+/* --- 3. HEADER TYPOGRAPHY --- */
+header {
+    text-align: center;
+    margin-bottom: 3.5rem;
+}
+
+h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    letter-spacing: -0.04em; /* Tight "Product" tracking */
+    margin: 0 0 12px 0;
+    color: var(--text-primary);
+    position: relative;
+    display: inline-block;
+}
+
+/* subtle underline highlight */
+h1::after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    left: 0;
+    width: 100%;
+    height: 12px;
+    background: rgba(59, 130, 246, 0.1); /* Very subtle blue highlight */
+    z-index: -1;
+    transform: rotate(-1deg);
+}
+
+.highlight {
+    background: linear-gradient(135deg, var(--text-primary) 0%, #475569 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+    font-family: var(--font-ui);
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    font-weight: 400;
+    max-width: 500px;
+    margin: 0 auto;
+    line-height: 1.5;
+}
+
+/* --- 4. THE GRID --- */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 Columns */
+    gap: 24px;
+    width: 100%;
+    perspective: 1000px; /* For 3D tilt effects if added later */
+}
+
+/* --- 5. CARD DESIGN (The "Hero" Element) --- */
+.card {
+    position: relative;
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 20px; /* Modern "Squircle" feel */
+    padding: 24px;
+    text-decoration: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    overflow: hidden; /* Masking */
+    
+    /* The "Weight" */
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s var(--ease-elastic);
+    
+    /* Layout */
+    height: 110px;
+}
+
+/* The Color Stripe (Left Border) */
+.card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+    background: var(--border-subtle);
+    transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+/* Specific Border Colors */
+.hash-card::before { background: var(--c-hash); }
+.graph-card::before { background: var(--c-graph); }
+.avl-card::before { background: var(--c-avl); }
+.heap-card::before { background: var(--c-heap); }
+
+/* --- CARD CONTENT LAYOUT --- */
+.card-content {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    z-index: 2;
+}
+
+/* Icon Box (Glassy feel) */
+.icon-wrapper {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-code);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+    
+    /* Subtle inner shadow for depth */
+    box-shadow: inset 0 2px 4px rgba(255,255,255,0.3), 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.hash-card .icon-wrapper { background: linear-gradient(135deg, var(--c-hash), #a78bfa); }
+.graph-card .icon-wrapper { background: linear-gradient(135deg, var(--c-graph), #60a5fa); }
+.avl-card .icon-wrapper { background: linear-gradient(135deg, var(--c-avl), #34d399); }
+.heap-card .icon-wrapper { background: linear-gradient(135deg, var(--c-heap), #fbbf24); }
+
+/* Text Group */
+.text-group {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+h3 {
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
+}
+
+/* Complexity Tag (The "Programming Vibe") */
+.tag {
+    font-family: var(--font-code);
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    background: #f1f5f9;
+    padding: 3px 8px;
+    border-radius: 6px;
+    margin-top: 6px;
+    align-self: flex-start; /* Don't stretch */
+    border: 1px solid transparent;
+    transition: all 0.2s;
+}
+
+/* --- HOVER INTERACTIONS (The Magic) --- */
+
+.card-hover-reveal {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    text-align: right;
+    opacity: 0;
+    transform: translateX(10px);
+    transition: all 0.3s var(--ease-bounce);
+}
+
+.card-hover-reveal p {
+    margin: 0;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.arrow {
+    font-size: 1.25rem;
+    font-weight: 800;
+    margin-top: 2px;
+    color: var(--text-primary);
+}
+
+/* Hover State Logic */
+.card:hover {
+    transform: translateY(-4px) scale(1.01);
+    box-shadow: var(--shadow-lg);
+    border-color: transparent; /* Let shadow define depth */
+    background: var(--bg-card-hover);
+}
+
+/* Expand the colored border slightly on hover */
+.card:hover::before {
+    width: 6px;
+}
+
+/* Reveal the right side content */
+.card:hover .card-hover-reveal {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Color the arrow based on the card type on hover */
+.hash-card:hover .arrow { color: var(--c-hash); }
+.graph-card:hover .arrow { color: var(--c-graph); }
+.avl-card:hover .arrow { color: var(--c-avl); }
+.heap-card:hover .arrow { color: var(--c-heap); }
+
+/* Make the tag look active */
+.card:hover .tag {
+    background: white;
+    border-color: var(--border-subtle);
+    color: var(--text-primary);
+}
+
+/* --- 6. FOOTER & CREDITS --- */
+footer {
+    margin-top: 4rem;
+    animation: fadeUp 1s 0.2s backwards;
+}
+
+.credit-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: white;
+    padding: 8px 16px;
+    border-radius: 99px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-subtle);
+    font-size: 0.8rem;
+    transition: transform 0.2s;
+}
+
+.credit-badge:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.made-by { 
+    color: var(--text-secondary);
+    font-family: var(--font-ui);
+}
+
+.creator-name { 
+    font-weight: 700; 
+    color: var(--text-primary);
+    font-family: var(--font-ui);
+    background: linear-gradient(to right, var(--c-graph), var(--c-hash));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* --- 7. RESPONSIVENESS & ANIMATION --- */
+@media (max-width: 768px) {
+    .grid { grid-template-columns: 1fr; }
+    h1 { font-size: 2.25rem; }
+    .app-container { padding: 1.5rem; }
+    .card { height: auto; padding: 20px; }
+}
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}

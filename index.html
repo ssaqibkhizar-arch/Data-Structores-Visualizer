@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DS_Visualizer // Main</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <canvas id="networkCanvas"></canvas>
+
+    <div class="app-container">
+        
+        <header>
+            <h1>Data Structures <span class="highlight">Visualizer</span></h1>
+            <p class="subtitle">Interactive algorithm simulations powered by C++ & WebAssembly.</p>
+        </header>
+
+        <main class="grid">
+            
+            <a href="Hash/index.html" class="card hash-card">
+                <div class="card-content">
+                    <div class="icon-wrapper">
+                        <span class="icon">#</span>
+                    </div>
+                    <div class="text-group">
+                        <h3>Hash Table</h3>
+                        <span class="tag">O(1) Access</span>
+                    </div>
+                </div>
+                <div class="card-hover-reveal">
+                    <p>Linear Probing & Chaining</p>
+                    <span class="arrow">→</span>
+                </div>
+            </a>
+
+            <a href="Graph/index.html" class="card graph-card">
+                <div class="card-content">
+                    <div class="icon-wrapper">
+                        <span class="icon">G</span>
+                    </div>
+                    <div class="text-group">
+                        <h3>Graph Algos</h3>
+                        <span class="tag">BFS / DFS / MST</span>
+                    </div>
+                </div>
+                <div class="card-hover-reveal">
+                    <p>Dijkstra & Pathfinding</p>
+                    <span class="arrow">→</span>
+                </div>
+            </a>
+
+            <a href="AVL Tree/index.html" class="card avl-card">
+                <div class="card-content">
+                    <div class="icon-wrapper">
+                        <span class="icon">T</span>
+                    </div>
+                    <div class="text-group">
+                        <h3>AVL Tree</h3>
+                        <span class="tag">Self-Balancing</span>
+                    </div>
+                </div>
+                <div class="card-hover-reveal">
+                    <p>Rotations & Balance Factor</p>
+                    <span class="arrow">→</span>
+                </div>
+            </a>
+
+            <a href="Binary Heap/index.html" class="card heap-card">
+                <div class="card-content">
+                    <div class="icon-wrapper">
+                        <span class="icon">H</span>
+                    </div>
+                    <div class="text-group">
+                        <h3>Binary Heap</h3>
+                        <span class="tag">Priority Queue</span>
+                    </div>
+                </div>
+                <div class="card-hover-reveal">
+                    <p>Min/Max Heapify Operations</p>
+                    <span class="arrow">→</span>
+                </div>
+            </a>
+
+        </main>
+
+        <footer>
+            <div class="credit-badge">
+                <span class="made-by">Created by</span>
+                <span class="creator-name">Saqib Ali</span>
+            </div>
+        </footer>
+
+    </div>
+
+    <script src="bg-animation.js"></script>
+</body>
+</html>

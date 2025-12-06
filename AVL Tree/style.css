@@ -1,22 +1,22 @@
 /* --- 1. Variables & Reset --- */
 :root {
-    /* Color Palette */
-    --primary-color: #2563eb;       /* Royal Blue */
-    --primary-hover: #1d4ed8;
-    --secondary-color: #4b5563;     /* Cool Gray */
-    --secondary-hover: #374151;
-    --accent-color: #10b981;        /* Emerald Green (Success/Found) */
-    --warning-color: #f59e0b;       /* Amber (Processing/Highlight) */
-    --danger-color: #ef4444;        /* Red (Delete/Error) */
+    /* Color Palette - UPDATED TO EMERALD THEME */
+    --primary-color: #10b981;       /* Emerald Green */
+    --primary-hover: #059669;       /* Darker Emerald */
+    --secondary-color: #4b5563;     /* Cool Gray (Unchanged) */
+    --secondary-hover: #374151;     /* (Unchanged) */
+    --accent-color: #3b82f6;        /* Blue (For contrast/Found state) */
+    --warning-color: #f59e0b;       /* Amber */
+    --danger-color: #ef4444;        /* Red */
     
-    --bg-body: #f3f4f6;             /* Light Gray Background */
-    --bg-panel: #ffffff;            /* White Panels */
-    --border-color: #e5e7eb;        /* Light Border */
-    --text-main: #111827;           /* Almost Black */
-    --text-muted: #6b7280;          /* Gray Text */
+    --bg-body: #f3f4f6;             
+    --bg-panel: #ffffff;            
+    --border-color: #e5e7eb;        
+    --text-main: #111827;           
+    --text-muted: #6b7280;          
     
-    --console-bg: #1f2937;          /* Dark Gray Console */
-    --console-text: #10b981;        /* Matrix Green */
+    --console-bg: #1f2937;          
+    --console-text: #34d399;        /* Light Emerald Text */
 
     --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
@@ -79,7 +79,7 @@ body {
 }
 
 .badge {
-    background-color: #dbeafe;
+    background-color: #ecfdf5; /* Changed to Light Emerald */
     color: var(--primary-color);
     font-size: 0.75rem;
     padding: 0.25rem 0.5rem;
@@ -103,7 +103,7 @@ body {
 }
 
 .status-dot.ready {
-    background-color: var(--accent-color); /* Green ready */
+    background-color: var(--primary-color); /* Green ready */
     box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
 }
 
@@ -186,7 +186,7 @@ input[type="number"] {
 input[type="number"]:focus {
     outline: none;
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
 }
 
 .btn {
@@ -225,7 +225,7 @@ input[type="number"]:focus {
     background-color: var(--accent-color);
     color: white;
 }
-.info-btn:hover { background-color: #059669; }
+.info-btn:hover { background-color: #2563eb; }
 
 
 /* Algo Grid */
@@ -238,13 +238,17 @@ input[type="number"]:focus {
 .algo-btn {
     background-color: white;
     border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 0.5rem;
     color: var(--text-main);
+    cursor: pointer;
+    transition: all 0.2s;
 }
 
 .algo-btn:hover {
     border-color: var(--primary-color);
     color: var(--primary-color);
-    background-color: #eff6ff;
+    background-color: #ecfdf5; /* Light Emerald */
 }
 
 /* Complexity/Stats Box */
@@ -290,11 +294,13 @@ input[type="number"]:focus {
     background-image: radial-gradient(#d1d5db 1px, transparent 1px);
     background-size: 20px 20px;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 .canvas-container {
     width: 100%;
-    height: 100%;
+    flex: 1; /* Take remaining height */
     overflow: hidden; /* Handle D3 Zoom/Pan instead */
     position: relative;
 }
@@ -316,7 +322,7 @@ input[type="number"]:focus {
 }
 
 .node circle:hover {
-    fill: #eff6ff;
+    fill: #ecfdf5; /* Light Emerald */
     stroke-width: 3.5px;
 }
 
@@ -326,10 +332,10 @@ input[type="number"]:focus {
     fill: #fffbeb; /* Light amber bg */
 }
 
-/* Found/Visited State (Green) */
+/* Found/Visited State (Blue/Accent) */
 .node.found circle {
     stroke: var(--accent-color);
-    fill: #ecfdf5; /* Light green bg */
+    fill: #eff6ff; /* Light blue bg */
 }
 
 /* Node Text */
@@ -454,3 +460,44 @@ input[type="number"]:focus {
 
 .log-entry { margin-bottom: 0.5rem; line-height: 1.4; }
 .log-entry.system { color: #60a5fa; }
+
+/* --- 4. NEW: Heap Array Visualizer Specifics --- */
+
+.array-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    flex-shrink: 0;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.array-box {
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--primary-color);
+    background-color: white;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    transition: all 0.3s;
+}
+
+.array-index {
+    margin-top: 4px;
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    font-family: 'Fira Code', monospace;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
