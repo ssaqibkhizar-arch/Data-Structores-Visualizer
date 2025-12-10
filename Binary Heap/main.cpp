@@ -17,7 +17,6 @@ class Heap
     int capacity;
     int size;
 
-    // Helper to swap nodes
     void swap(int &a, int &b)
     {
         int temp = a;
@@ -28,7 +27,7 @@ class Heap
     void percolateUPMin(int i)
     {
         if (i <= 1)
-            return; // Root logic for 1-based indexing
+            return;
         int parent = i / 2;
         if (arr[parent] > arr[i])
         {
@@ -81,12 +80,10 @@ class Heap
         if (largest != i)
         {
             swap(arr[i], arr[largest]);
-            // FIX: Was recursively calling Min, changed to Max
             percolateDownMax(largest);
         }
     }
 
-    // Helper for JSON: Converts index to recursive tree JSON
     void nodeToJSON(int i, stringstream &ss)
     {
         if (i > size)
@@ -97,7 +94,7 @@ class Heap
 
         ss << "{";
         ss << "\"value\": " << arr[i] << ",";
-        ss << "\"index\": " << i << ","; // Useful for array visualization
+        ss << "\"index\": " << i << ","; 
         ss << "\"children\": [";
 
         // Left Child
@@ -141,7 +138,6 @@ public:
         percolateUPMax(size);
     }
 
-    // FIX: Completed logic
     int extractMin()
     {
         if (size == 0)
@@ -153,7 +149,6 @@ public:
         return root;
     }
 
-    // Added Extract Max
     int extractMax()
     {
         if (size == 0)
@@ -165,7 +160,6 @@ public:
         return root;
     }
 
-    // Returns the Tree Structure JSON for D3
     string getTreeJSON()
     {
         if (size == 0)
@@ -175,7 +169,7 @@ public:
         return ss.str();
     }
 
-    // Returns the flat Array JSON for the Array View
+
     string getArrayJSON()
     {
         stringstream ss;
@@ -193,7 +187,6 @@ public:
     // Convert current heap to Min or Max (Heapify All)
     void rebuild(bool isMin)
     {
-        // Floyd's building algorithm: start from last parent down to root
         for (int i = size / 2; i >= 1; i--)
         {
             if (isMin)
@@ -210,7 +203,7 @@ public:
 
 Heap *heap = nullptr;
 string buffer;
-bool isMinMode = true; // Toggle state
+bool isMinMode = true;
 
 extern "C"
 {
@@ -250,8 +243,6 @@ extern "C"
     EMSCRIPTEN_KEEPALIVE
     const char *deleteNode(int val)
     {
-        // Note: Heaps usually only extract root (Min/Max).
-        // We will treat "deleteNode" as "Extract Root" regardless of the 'val' passed.
         if (!heap)
             return "null";
 
@@ -273,7 +264,6 @@ extern "C"
         return buffer.c_str();
     }
 
-    // New: Get the flat array for visualization
     EMSCRIPTEN_KEEPALIVE
     const char *getArrayData()
     {

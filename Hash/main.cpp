@@ -15,8 +15,8 @@ using namespace std;
 struct Entry
 {
     int value;
-    bool occupied; // false = empty, true = occupied
-    Entry *next;   // For Separate Chaining
+    bool occupied;
+    Entry *next;
 
     Entry()
     {
@@ -47,8 +47,6 @@ public:
         delete[] table;
     }
 
-    // Helper to format a step for the frontend animation log
-    // Format: "index:status" (e.g., "4:collision")
     string formatStep(int index, string status, int val)
     {
         stringstream ss;
@@ -56,8 +54,6 @@ public:
         return ss.str();
     }
 
-    // Returns a JSON string describing the steps taken during insertion
-    // probeType: 1 = Linear, 2 = Quadratic, 3 = Chaining
     string insert(int value, int probeType)
     {
         stringstream logStream;
@@ -125,12 +121,10 @@ public:
 
             if (probeType == 1)
             {
-                // Linear Probing: (H(x) + i) % Size
                 currentIndex = (initialIndex + i) % capacity;
             }
             else
             {
-                // Quadratic Probing: (H(x) + i*i) % Size
                 currentIndex = (initialIndex + (i * i)) % capacity;
             }
 
@@ -304,7 +298,7 @@ public:
 
 // --- GLOBAL INTERFACE ---
 HashTable *globalTable = nullptr;
-std::string responseBuffer;
+string responseBuffer;
 
 extern "C"
 {
@@ -318,7 +312,6 @@ extern "C"
     }
 
     // Returns a JSON Log of the steps taken: e.g. [{index:2, status:"collision"}, {index:3, status:"inserted"}]
-    // probeType: 1=Linear, 2=Quadratic, 3=Chaining
     EMSCRIPTEN_KEEPALIVE
     const char *insertValue(int val, int probeType)
     {

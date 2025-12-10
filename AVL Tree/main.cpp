@@ -27,8 +27,14 @@ class AVLTree
 {
     Node *root;
 
-    int height(Node *N) { return N ? N->height : 0; }
-    int max(int a, int b) { return (a > b) ? a : b; }
+    int height(Node *N) 
+    {
+         return N ? N->height : 0; 
+    }
+    int max(int a, int b) 
+    {
+         return (a > b) ? a : b;
+    }
 
     Node *rightRotate(Node *y)
     {
@@ -52,7 +58,10 @@ class AVLTree
         return y;
     }
 
-    int getBalance(Node *N) { return N ? height(N->left) - height(N->right) : 0; }
+    int getBalance(Node *N) 
+    {
+        return N ? height(N->left) - height(N->right) : 0;
+    }
 
     Node *insert(Node *node, int key)
     {
@@ -231,10 +240,22 @@ class AVLTree
 
 public:
     AVLTree() : root(nullptr) {}
-    ~AVLTree() { deleteTree(root); }
-    void insertKey(int key) { root = insert(root, key); }
-    void removeKey(int key) { root = deleteNode(root, key); }
-    bool searchKey(int key) { return search(root, key); }
+    ~AVLTree() 
+    {
+        deleteTree(root); 
+    }
+    void insertKey(int key)
+    { 
+        root = insert(root, key); 
+    }
+    void removeKey(int key) 
+    {
+        root = deleteNode(root, key); 
+    }
+    bool searchKey(int key) 
+    { 
+        return search(root, key);
+    }
 
     string getJSON()
     {
