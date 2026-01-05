@@ -53,9 +53,6 @@ function onWasmReady() {
 
     logConsole(">> WASM Core Loaded. Hash Table (Size 12) Ready.");
 
-    // Initialize Hash Table in C++
-    Module.ccall('initHashTable', null, ['number'], [TABLE_CAPACITY]);
-
     // Initial Render
     refreshTable();
 }
